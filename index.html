@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HiveMind</title>
+    <link href="css/bootstrap.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="css/wobblebar.css" type="text/css">
+    <link href="css/main.css" rel="stylesheet" media="screen">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="lib/shiv/html5shiv.js"></script>
+      <script src="lib/respond/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/raphael.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+  </head>
+  <body>
+    <div class="wobblebar">
+    Loading...
+    </div>
+    <div class="body container-fluid full-height">
+      <div class="row full-height">
+        <div class="col-xs-2 full-height left-side-section">
+          <h1>Some shit</h1>
+        </div>
+        <div class="col-xs-8">
+          <div class="row">
+            <div class="col-xs-4 col-xs-offset-4">
+              <img src="img/hm.png" class="img-responsive img-center logo" alt="HiveMind Logo">
+            </div>
+          </div>
+          <div class="input-group">
+            <input type="text" class="form-control input-lg" id="query" placeholder="Enter query">
+            <span type="button" class="btn btn-danger btn-lg input-group-addon">Swarm</span>
+          </div>
+          <div class="related">
+            <h2>
+              Related Queries:
+              <span class="label label-danger">Obama</span>
+              <span class="label label-danger">Yo Mama</span>
+              <span class="label label-danger">Baby Drama</span>
+            </h2> 
+          </div>
+          <div class="analysis">
+
+            <div class="canvas"></div>
+          </div>
+        </div>
+        <div class="col-xs-2 full-height right-side-section">
+          <h1>Related Searches</h1>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
