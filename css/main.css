@@ -1,0 +1,12 @@
+.img-center.img-responsive {
+  margin: 0 auto;
+}
+
+html, body {
+  height: 100%;
+  background-color: black;
+}
+
+.row .logo {
+  margin-bottom: 50px;
+}
