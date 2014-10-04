@@ -24,10 +24,17 @@ utils.find_titles(titles, response)
 
 num_links = len(links)
 pool = Pool(processes=num_links)
-sentiments, articles = pool.map(utils.get_article_sentiment, links)
-
-
+sentiments, sentences = pool.map(utils.get_article_sentiment, links)
 
 average_sentiment = utils.average_sentiment(sentiments, num_links)
 
-print(links, average_sentiment)
+result = {}
+result["sentiment"] = average_sentiment
+result["articles"] = []
+for i in range(num_links):
+    info = {}
+    info["title"] = titles[i]
+    info["link"] = links[i]
+    info["sentiment"] = sentiments[i]
+    result["articles"].append(info)
+print(result)

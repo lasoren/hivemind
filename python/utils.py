@@ -1,3 +1,4 @@
+import idol_sentiment as isent
 from multiprocessing import Pool
 
 LINK = "<link>"
@@ -59,9 +60,15 @@ def get_article_sentiment(url):
             line_sentences = line.split(".")
             sentences = sentences + line_sentences
     sentences = extract_n_sentences(sentences, NUM_SENTENCES)
-    pool = Pool(processes=NUM_SENTENCES)
 
-    return 0.5
+    pool = Pool(processes=NUM_SENTENCES)
+    sentiments = pool.map(isent.find_sentence_sentiment, sentences)
+
+    num_sentences = len(sentences)
+    article_sentiment = average_sentiment(sentiments, num_sentences)
+    if num_sentences == 0:
+        return "", 0
+    return sentences[0], article_sentiment
 
 
 def average_sentiment(sentiments, num_links):
