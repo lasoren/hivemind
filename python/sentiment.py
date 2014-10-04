@@ -1,5 +1,4 @@
 from multiprocessing import Pool
-
 import urllib.request
 import utils
 
