@@ -17,7 +17,7 @@ URL_LENGTH = len(URL)
 NUM_SENTENCES = 5
 
 
-TEST_ARTICLE = "My iPhone 6 Plus arrived in the mail last night, "
+TEST_ARTICLE = ("My iPhone 6 Plus arrived in the mail last night, "
     "so I'm currently within the first few minutes of playing around "
     "with it. This was the first iPhone that I ever ordered online — "
     "my previous ones I bought in the store — and so it was the first "
@@ -25,8 +25,8 @@ TEST_ARTICLE = "My iPhone 6 Plus arrived in the mail last night, "
     "so that was cool. Restoring my contacts, photos, and apps via "
     "iCloud also worked very nicely. Anyway, the iPhone has never been "
     "particularly good at capturing images in low light. But it's "
-    "instantly clear that the new iPhone represents a major advance "
-    "on this front."
+    "instantly clear that the new iPhone represents a major advance on "
+    "this front.")
 
 
 def find_links(links, response):
