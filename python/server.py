@@ -25,10 +25,11 @@ def initialize():
 @app.route('/api/images', methods=['POST'])
 def images():
     query = request.form['query']
-    query = query.replace(" ", "%20")
+    query2 = query.replace(" ", "%20")
     
-    json_data = json.loads(requests.get("http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + query).text)
+    json_data = json.loads(requests.get("http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + query2).text)
     json_data['echo'] = query
+    json_data['echo2'] = query2
     return Response(json.dumps(json_data), mimetype='application/json')
 
 @app.route('/api/articles', methods=['POST'])
@@ -218,7 +219,7 @@ def entities():
             for i in range(1, num_entities):
                 result[i] = [word.title() for word in entities[i]]
         app.entity_cache[query] = deepcopy(result)
-        result["entities"] = []
+
         return Response(json.dumps(result), mimetype='application/json')
 
 
