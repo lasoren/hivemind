@@ -116,11 +116,13 @@ def sentiment():
             titles = titles[2:]
 
         num_links = len(links)
-        num_titles = 3
+        num_titles = len(titles)
+        if num_titles > 3:
+            num_titles = 3
         if num_titles < num_links:
-            links = links[:num_titles]
-        num_titles = len(links)
-        num_links = 3
+            links = links[:num_titles]x
+        if num_links > 3:
+            num_links = 3
         if num_links < num_titles:
             titles = titles[:num_links]
 
