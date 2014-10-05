@@ -1,10 +1,10 @@
-from multiprocessing import ThreadPool
+from multiprocessing.pool import ThreadPool
 import requests
 import utils
 
 GOOGLE_NEWS_RSS = "https://news.google.com/news/feeds?output=rss&q="
 SPACE = "%20"
-query = "iphone 6 bendgate"
+query = "stn mtn"
 
 
 query = query.replace(" ", "%20")
@@ -21,7 +21,7 @@ titles = []
 utils.find_titles(titles, response)
 
 num_links = 5
-pool = Pool(processes=num_links)
+pool = ThreadPool(processes=num_links)
 articles = pool.map(utils.get_article_sentiment, links[:num_links])
 # for i in range(num_links):
 # utils.get_article_sentiment(links[0])
