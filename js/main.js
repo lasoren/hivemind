@@ -22,6 +22,7 @@ $(function(){
 });
 
 function startQuery() {
+  $('.body-section').addClass('hidden').removeClass('animated fadeIn');
   startLoading();
   removeHeader();
 
@@ -38,9 +39,13 @@ function startQuery() {
   }, 'json');
 }
 
+function addLabels() {
+
+}
+
 
 function startLoading() {
-  $('.loading').removeClass('hidden').addClass('animated fadeIn');
+  $('.loading').removeClass('hidden animated fadeOut').addClass('animated fadeIn');
 }
 
 function removeHeader() {
@@ -57,25 +62,24 @@ function finishLoading() {
 }
 
 function drawPercentage(percentage) {
+  $('.analysis').removeClass('hidden animated fadeOut').addClass('animated fadeIn');
+
   $('.progress-bar-success').css({width: percentage + '%'});
+  $('.progress-bar-danger').css({width: (100-percentage) + '%'});
 
-  $('.progress-bar-success').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
-    $('.progress-bar-danger').css({width: (100-percentage) + '%'});
-  });
+  var red = Math.round((100-percentage)*255/100);
+  var green = Math.round(percentage*255/100);
+  var sentiment = $('.sentiment-like').text(Math.round(percentage) + '%');
+  var success_bar = $('.progress-bar-success');
 
-  $('.progress-bar-danger').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
-    var red = Math.round((100-percentage)*255/100);
-    var green = Math.round(percentage*255/100);
-    var sentiment = $('.sentiment-like').text(Math.round(percentage) + '%');
-    var success_bar = $('.progress-bar-success');
-
-    sentiment.css({'margin-left': success_bar.width() + 'px'})
-             .removeClass('invisible');
+  sentiment.css({'margin-left': success_bar.width() + 'px'})
+           .removeClass('invisible');
                         
-  });
 }
 
 function drawArticles(articles) {
+  $('.articles').removeClass('hidden').addClass('animated fadeIn');
+
   var holder = $('.articles-holder');
   holder.empty();
   $('.articles').removeClass('hidden');
@@ -93,7 +97,7 @@ function drawArticles(articles) {
     }
     div += '</div>' +
            '<div class="col-xs-11 article' + article.id + '">' +
-           '<a href="' + article.url + '"><h2 class="invisible">' + article.title + '</h2></a>' +
+           '<a href="' + article.link + '"><h2 class="invisible">' + article.title + '</h2></a>' +
            '<p class="snippet lead invisible">' + article.snippet + '</p>' +
            '</div>' +
            '</div>'
