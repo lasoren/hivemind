@@ -6,7 +6,7 @@ class ArticleExtractor(object):
 
 	def extract(self, article):
 		try:
-			extractor = Extractor(extractor='ArticleExtractor', url=article.url)
+			extractor = Extractor(extractor='ArticleSentencesExtractor', url=article.url)
 		except Exception as e:
 			return e.msg
 		article_text = ''
@@ -14,7 +14,7 @@ class ArticleExtractor(object):
 			article_text = extractor.getText()
 		except Exception:
 			pass
-		return article_text
+		return article_text.encode('utf-8')
 
 
 class EntityFinder(object):
@@ -54,6 +54,8 @@ class TokenFinder(object):
 
 class Article(object):
 
+	MAX_SUMMARY_LEN = 150 # characters
+
 	def __init__(self, url, title=''):
 		self.url = url
 		self.title = title
@@ -89,5 +91,17 @@ class Article(object):
 	def _format_words(self, words):
 		return [word.title() for word in words]
 
+	@property
+	def summary(self):
+		summary = self.text
+		if len(summary) < Article.MAX_SUMMARY_LEN:
+			return summary
+		elif summary.find('.') >= 0:
+			return summary[:summary.find('.')+1]
+		else:
+			return summary[:Article.MAX_SUMMARY_LEN]
+
 if __name__ == '__main__':
-	print Article('http://www.christiantoday.com/article/iphone.6.problems.bendgate.still.continues.apple.mocked.videos.memes/41216.htm', 'blank').all_entities
+	a = Article('http://www.csmonitor.com/USA/2014/1004/Many-Ebola-inquiries-around-the-US-but-just-one-confirmed-case-so-far-video', 'blank')
+	print a.summary
+	print a.all_entities
