@@ -128,6 +128,9 @@ function drawEntities(data) {
     $.post('http://' + url + '/api/images', {query: entity}, function(data) {
       if (typeof data.responseData !== "undefined" && data.responseData != null) {
         holder.append('<div class="thumbnail"><img class="img-responsive" src="' + data.responseData.results[0].url + '"><a href="#" class="list-group-item linked"><h3 class="text-center">' + data.echo + '</h3></a></div>');
+        holder.find('img:last').error(function() {
+          $(this).parent(".thumbnail").hide();
+        });
       }
     }, 'json');
   }
