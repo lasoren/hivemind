@@ -4,7 +4,7 @@ import utils
 
 GOOGLE_NEWS_RSS = "https://news.google.com/news/feeds?output=rss&q="
 SPACE = "%20"
-query = "stn mtn"
+query = "barack obama"
 
 
 query = query.replace(" ", "%20")
@@ -21,11 +21,11 @@ titles = []
 utils.find_titles(titles, response)
 
 num_links = 5
-# pool = ThreadPool(processes=num_links)
-# articles = pool.map(utils.get_article_sentiment, links[:num_links])
-articles = []
-for i in range(num_links):
-    articles.append(utils.get_article_sentiment(links[i]))
+pool = ThreadPool(processes=num_links)
+articles = pool.map(utils.get_article_sentiment, links[:num_links])
+# articles = []
+# for i in range(num_links):
+#     articles.append(utils.get_article_sentiment(links[i]))
 
 sentiments = []
 
