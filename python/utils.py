@@ -65,9 +65,12 @@ def get_article_sentiment(url, title, articles):
     articles[url] = result
 
 
-def get_article_entities(url, entities):
+def get_article_entities(url, entities, normalize=True):
     article = Article(url)
-    entities.append(article.all_entities)
+    if normalize:
+        entities.append(article.all_entities)
+    else:
+        entities.append(article.all_original_entities)
 
 
 def average_sentiment(sentiments, num_links):
