@@ -1,4 +1,4 @@
-from multiprocessing.pool import ThreadPool
+from thread_pool import ThreadPool
 import requests
 import utils
 
@@ -6,7 +6,7 @@ GOOGLE_NEWS_RSS = "https://news.google.com/news/feeds?output=rss&q="
 SPACE = "%20"
 query = "barack obama"
 
-
+query = request.form['query']
 query = query.replace(" ", "%20")
 url = GOOGLE_NEWS_RSS+query
 response = requests.get(url).text
@@ -23,12 +23,16 @@ utils.find_titles(titles, response)
 if len(titles) > 1:
     titles = titles[2:]
 
-num_links = 5
-pool = ThreadPool(processes=num_links)
-articles = pool.map(utils.get_article_sentiment, links[:num_links])
-# articles = []
-# for i in range(num_links):
-#     articles.append(utils.get_article_sentiment(links[i]))
+for i in range(len(links)):
+    print(links[i], titles[i])
+
+num_links = len(links)
+articles = []
+pool = ThreadPool(num_links)
+for i in range(num_links):
+    pool.add_task(
+        utils.get_article_sentiment, links[i], articles)
+pool.wait_completion()
 
 sentiments = []
 

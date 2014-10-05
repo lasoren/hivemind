@@ -86,7 +86,7 @@ class Article(object):
 
 	@property
 	def all_entities(self):
-		return self._format_words(self.tokens.union(self.entities))
+		return self.tokens.union(self.entities)
 
 	def _format_words(self, words):
 		return [word.title() for word in words]
