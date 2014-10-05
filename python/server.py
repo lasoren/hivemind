@@ -105,7 +105,7 @@ def entities():
 	    entities_set = entities[0]
 	    for i in range(1, num_entities):
 		entities_set.union(entities[i])
-	    entities_list = [word.title() for word in previous_set]
+	    entities_list = [word.title() for word in entities_set]
 	    result = {}
             result["entities"] = entities_list
             return Response(json.dumps(result), mimetype='application/json')
