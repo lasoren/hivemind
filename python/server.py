@@ -29,6 +29,7 @@ def images():
     
     json_data = json.loads(requests.get("http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + query2).text)
     json_data['echo'] = query
+    json_data['echo2'] = query2
     return Response(json.dumps(json_data), mimetype='application/json')
 
 @app.route('/api/articles', methods=['POST'])
