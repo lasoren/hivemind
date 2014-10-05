@@ -2,6 +2,11 @@ var url = "54.84.224.246";
 var ids;
 
 $(function(){
+  var query = getParameterByName('q');
+  if (typeof query !== "undefined") {
+    $('.query').val(query);
+    startQuery();
+  }
   // Swarm it up
   $('.swarm').click(function() {
     startQuery();
@@ -117,13 +122,18 @@ function drawEntities(data) {
     holder.append('<a href="#" class="list-group-item linked">' + entity + '</a>');
   }
 
+  if (typeof ids === "undefined") {
+    debugger;
+  }
   for (var i = 0; i < ids.length; i++) {
     var article_header = $('.article' + ids[i] + ' h2');
     article_header.after('<div class="labels"></div>');
     var labels = article_header.siblings('.labels');
     for (var j = 0; j < data[ids[i]].length; j++) {
       var entity = data[ids[i]][j];
-      labels.append('<a href="#" class="linked label label-default">' + entity + '</a>');
+      $.get('http://' + url + '/api/image', {query: entity}, function(data) {
+        labels.append('<a href="#" class="linked label label-default"><img src="' + data.responseData.results[0].url + '"></a>');
+      }, 'json');
     }
   }
 
