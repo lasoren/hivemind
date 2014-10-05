@@ -74,19 +74,13 @@ def get_article_entities(url, entities, normalize=True):
 
 
 def average_sentiment(sentiments, num_links):
-    final_sum = 0
-    for score in sentiments:
-        if score > 0.5:
-            final_sum += 2/float(num_links)
-        elif score < 0.5:
-            final_sum -= 2/float(num_links)
-    final_sum += sum(sentiments)
-    ave = final_sum / float(num_links)
-    if ave > 1:
-        ave = 1
-    if ave < 0:
-        ave = 0
-    return ave
+    s = sum(sentiments)
+    s = s / num_links
+    s = s - 0.3
+    s = s * 2.5
+    s = min(s, 1)
+    s = max(0, s)
+    return s
 
 
 def extract_n_sentences(sentences, n):
