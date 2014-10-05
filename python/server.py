@@ -208,7 +208,7 @@ def entities():
 
 
         entity_dict = defaultdict(int)
-        for entity_list in enumerate(entities):
+        for entity_list in entities:
             for entity in entity_list:
                 entity_dict[entity] += 1
         entities_list = list(sorted(entity_dict.items(), key=lambda x: x[1]))
