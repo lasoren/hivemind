@@ -21,14 +21,14 @@ class EntityFinder(object):
 
 	ENTITY_TYPES = ['companies_eng', 'organizations', 'universities', 'people_eng']
 	MIN_SCORE = 0.03
-	
-	def entities(self, article):
+
+	def entities(self, article, normalize=True):
 		args = {'text': article.text, 'entity_type': EntityFinder.ENTITY_TYPES, 'show_alternatives': False}
 		r = APIRequest(APIEndpoints.EXTRACT_ENTITIES, args).response()
 		res = []
 		for candidate in r['entities']:
-			if candidate['score'] > EntityFinder.MIN_SCORE:
-				res.append(candidate['normalized_text'])
+			if candidate['score'] > EntityFinder.MIN_SCORE and candidate['original_text'] != 'too':
+				res.append(candidate[('normalized_text' if normalize else 'original_text')])
 		res = set(res)
 		return res
 
@@ -37,6 +37,7 @@ class TokenFinder(object):
 
 	MAX_TERMS = 50
 	MAX_FILTERED_TERMS = 8
+	MIN_WEIGHT = 100
 
 	def tokens(self, article):
 		args = {'text': article.text, 'stemming': False, 'max_terms': TokenFinder.MAX_TERMS}
@@ -45,7 +46,7 @@ class TokenFinder(object):
 		for candidate in r['terms']:
 			candidates.append(candidate)
 		candidates.sort(key=lambda x: x['weight'])
-		candidates = [candidate['term'] for candidate in reversed(candidates) if candidate['weight'] >= 100]
+		candidates = [candidate['term'] for candidate in reversed(candidates) if candidate['weight'] >= TokenFinder.MIN_WEIGHT]
 		if len(candidates) >= TokenFinder.MAX_FILTERED_TERMS:
 			return set(candidates[:TokenFinder.MAX_FILTERED_TERMS])
 		else:
@@ -64,6 +65,7 @@ class Article(object):
 		self._token_finder = TokenFinder()
 		self._text = None
 		self._entities = None
+		self._original_entities = None
 		self._tokens = None
 
 	@property
@@ -79,6 +81,12 @@ class Article(object):
 		return self._entities
 
 	@property
+	def original_entities(self):
+		if not self._original_entities:
+			self._original_entities = self._entity_finder.entities(self, False)
+			return self._original_entities
+
+	@property
 	def tokens(self):
 		if not self._tokens:
 			self._tokens = self._token_finder.tokens(self)
@@ -87,6 +95,10 @@ class Article(object):
 	@property
 	def all_entities(self):
 		return self.tokens.union(self.entities)
+
+	@property
+	def all_original_entities(self):
+		return set([item.lower() for item in list(self.tokens)]).union(self.original_entities)
 
 	def _format_words(self, words):
 		return [word.title() for word in words]
@@ -108,3 +120,4 @@ if __name__ == '__main__':
 	a = Article('http://online.wsj.com/articles/book-review-how-google-works-by-eric-schmidt-and-jonathan-rosenberg-1412371982', 'blank')
 	print a.summary
 	print a.all_entities
+	print a.all_original_entities
