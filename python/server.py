@@ -207,7 +207,7 @@ def entities():
         num_entities = len(entities)
 
 
-        entity_dict = defaultdict(0)
+        entity_dict = defaultdict(int)
         for entity_list in enumerate(entities):
             for entity in entity_list:
                 entity_dict[entity] += 1
