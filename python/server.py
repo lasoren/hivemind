@@ -7,6 +7,7 @@ import requests
 import utils
 import json
 from copy import deepcopy
+from collections import defaultdict
 
 GOOGLE_NEWS_RSS = "https://news.google.com/news/feeds?output=rss&q="
 SPACE = "%20"
@@ -205,27 +206,13 @@ def entities():
         result = {}
         num_entities = len(entities)
 
-        max_entities = 0
-        i = -1
-        for x, entity_list in enumerate(entities):
-            if len(entity_list) > max_entities:
-                max_entities = len(entity_list)
-                i = x
-        if max_entities > 0:
-            temp = entities[0]
-            entities[0] = entities[i]
-            entities[i] = temp
 
-        if num_entities > 0:
-            previous_set = entities[0]
-            final_set = entities[0]
-            index = 1
-            while index < num_entities and len(final_set) > 5:
-                final_set = previous_set.intersection(entities[index])
-                if len(final_set) > 5:
-                    previous_set = final_set
-        entities_list = [word.title() for word in previous_set]
-        if len(entities_list) > 5:
+        entity_dict = defaultdict(0)
+        for entity_list in enumerate(entities):
+            for entity in entity_list:
+                entity_dict[entity] += 1
+        entities_list = list(sorted(entity_dict.items(), key=lambda x: x[1]))
+        if len(entities_list > 5):
             entities_list = entities_list[:5]
 
         fix_entities = False
