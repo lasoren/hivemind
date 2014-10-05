@@ -101,7 +101,7 @@ def entities():
                 final_set = previous_set.union(entities[index])
                 if len(final_set) > 5:
                     previous_set = final_set
-        entities_list = list(previous_set)
+        entities_list = [word.title() for word in previous_set]
         result = {}
         result["entities"] = entities_list
         return Response(json.dumps(result), mimetype='application/json')
