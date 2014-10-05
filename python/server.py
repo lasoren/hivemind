@@ -25,9 +25,9 @@ def initialize():
 @app.route('/api/images', methods=['POST'])
 def images():
     query = request.form['query']
-    query = query.replace(" ", "%20")
+    query2 = query.replace(" ", "%20")
     
-    json_data = json.loads(requests.get("http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + query).text)
+    json_data = json.loads(requests.get("http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + query2).text)
     json_data['echo'] = query
     return Response(json.dumps(json_data), mimetype='application/json')
 
