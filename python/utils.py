@@ -72,7 +72,7 @@ def get_article_sentiment(url):
     if num_sentences == 0:
         return "", 0
     result = {}
-    result["snippet"] = sentences[0]
+    result["snippet"] = max(sentences, key=len)
     result["sentiment"] = article_sentiment
     return result
 
