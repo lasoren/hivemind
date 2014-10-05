@@ -131,6 +131,19 @@ def sentiment():
         return Response(json.dumps(result), mimetype='application/json')
 
 
+@app.route('/api/entity', methods=['POST'])
+def entity():
+    error = None
+    if request.method == 'POST':
+        url = request.form['url']
+        entities = []
+        utils.get_article_entities(url, entities)
+
+        entities_list = [word.title() for word in entities[0]]
+        result["entities"] = entities_list
+
+        return Response(json.dumps(result), mimetype='application/json') 
+
 @app.route('/api/entities', methods=['POST'])
 def entities():
     error = None
