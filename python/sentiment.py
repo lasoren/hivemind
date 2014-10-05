@@ -38,6 +38,9 @@ pool.wait_completion()
 
 sentiments = []
 
+print num_links
+print len(articles)
+
 result = {}
 result["articles"] = []
 for i in range(num_links):
