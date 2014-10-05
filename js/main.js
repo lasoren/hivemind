@@ -13,6 +13,12 @@ $(function(){
         startQuery();
       }
   });
+
+  $('body').on('click', '.linked', function() {
+    var text = $(this).text();
+    $('.query').val(text);
+    startQuery();
+  });
 });
 
 function startQuery() {
@@ -31,7 +37,6 @@ function startQuery() {
     drawEntities(data);
   }, 'json');
 }
-
 
 
 function startLoading() {
@@ -88,7 +93,7 @@ function drawArticles(articles) {
     }
     div += '</div>' +
            '<div class="col-xs-11 article' + article.id + '">' +
-           '<h2 class="invisible">' + article.title + '</h2>' +
+           '<a href="' + article.url + '"><h2 class="invisible">' + article.title + '</h2></a>' +
            '<p class="snippet lead invisible">' + article.snippet + '</p>' +
            '</div>' +
            '</div>'
