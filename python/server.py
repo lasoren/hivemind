@@ -13,7 +13,7 @@ query = "iphone"
 app = Flask(__name__)
 
 @app.route('/articles', methods=['POST'])
-def login():
+def articles():
     error = None
     if request.method == 'POST':
         query = request.form['query']
@@ -54,4 +54,4 @@ def login():
     return Response(json.dump(result), mimetype='application/json')
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=True)
