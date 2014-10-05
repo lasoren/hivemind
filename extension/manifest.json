@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "manifest_version": 2,
   "description": "This extension interfaces with HiveMind and provides sentiment for the relevant information on a page",
-  "homepage_url": "http://swarmtheinter.net",
+  "homepage_url": "http://hivemindisaweso.me",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
@@ -39,6 +39,6 @@
     }
   ],
     "permissions": [
-      "tabs", "https://www.google.com/*", "http://www.google.com/*", "http://54.84.224.246/*", "http://*/*", "https://*/*"
+      "tabs", "http://hivemindisaweso.me/*", "http://*/*", "https://*/*"
   ]
 }
