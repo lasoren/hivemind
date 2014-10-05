@@ -56,8 +56,11 @@ def articles():
 
         result = {}
         result["articles"] = []
+	index = 0
         for key in articles:
             info = {}
+	    info["id"] = index
+	    index += 1
             info["title"] = articles[key]["title"]
             info["link"] = key
             sentiments.append(articles[key]["sentiment"])
@@ -100,16 +103,17 @@ def entities():
                 utils.get_article_entities, links[i], entities)
         pool.wait_completion()
 
+	result = {}
         num_entities = len(entities)
 	if num_entities > 0:
 	    entities_set = entities[0]
+	    result[0] = [word.title() for word in entities[0]]
 	    for i in range(1, num_entities):
-		entities_set.union(entities[i])
+	        result[i] = [word.title() for word in entities[i]]
+		entities_set = entities_set.intersection(entities[i])
 	    entities_list = [word.title() for word in entities_set]
-	    result = {}
             result["entities"] = entities_list
             return Response(json.dumps(result), mimetype='application/json')
-	result = {}
 	result["entities"] = []
         return Response(json.dumps(result), mimetype='application/json')
 	
