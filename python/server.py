@@ -61,7 +61,7 @@ def articles():
 
         result = {}
         result["articles"] = []
-	index = 0
+	    index = 0
         for key in articles:
             info = {}
 	    info["id"] = index
@@ -79,6 +79,57 @@ def articles():
         result["sentiment"] = average_sentiment
         app.cache[query] = deepcopy(result)
         return Response(json.dumps(result), mimetype='application/json')
+
+
+@app.route('/api/sentiment', methods=['POST'])
+def sentiment():
+    error = None
+    if request.method == 'POST':
+        query = request.form['query']
+        query = query.replace(" ", "%20")
+        url = GOOGLE_NEWS_RSS+query
+        response = requests.get(url).text
+
+        # Get article links from the RSS
+        links = []
+        utils.find_links(links, response)
+        if len(links) > 2:
+            links = links[2:]
+
+        # Get article titles from the RSS
+        titles = []
+        utils.find_titles(titles, response)
+        if len(titles) > 2:
+            titles = titles[2:]
+
+        num_links = len(links)
+        num_titles = 3
+        if num_titles < num_links:
+            links = links[:num_titles]
+        num_titles = len(links)
+        num_links = 3
+        if num_links < num_titles:
+            titles = titles[:num_links]
+
+        articles = {}
+        pool = ThreadPool(num_links)
+        for i in range(num_links):
+            pool.add_task(
+                utils.get_article_sentiment, links[i], titles[i], articles)
+        pool.wait_completion()
+
+        sentiments = []
+
+        result = {}
+        for key in articles:
+            sentiments.append(articles[key]["sentiment"])
+
+        average_sentiment = utils.average_sentiment(
+            sentiments,
+            len(sentiments))
+        result["sentiment"] = average_sentiment
+        return Response(json.dumps(result), mimetype='application/json')
+
 
 @app.route('/api/entities', methods=['POST'])
 def entities():
