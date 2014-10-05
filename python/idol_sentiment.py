@@ -7,4 +7,7 @@ def find_sentence_sentiment(sentence):
     sentence = ''.join([i if ord(i) < 128 else ' ' for i in sentence])
     args = {'text':sentence}
     response = APIRequest(APIEndpoints.GET_SENTIMENT, args).response()
-    return response["aggregate"]["score"]
+    try:
+        return response["aggregate"]["score"]
+    except KeyError:
+        return 0
