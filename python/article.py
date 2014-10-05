@@ -31,6 +31,7 @@ class EntityFinder(object):
 		res = set(res)
 		return res
 
+
 class TokenFinder(object):
 
 	MAX_TERMS = 50
