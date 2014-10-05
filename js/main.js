@@ -119,7 +119,9 @@ function drawEntities(data) {
   holder.removeClass('hidden');
   for (var i = 0; i < entities.length; i++) {
     var entity = entities[i];
-    holder.append('<a href="#" class="list-group-item linked">' + entity + '</a>');
+    $.post('http://' + url + '/api/images', {query: entity}, function(data) {
+      holder.append('<div class="thumbnail"><a href="#" class="list-group-item linked"><img class="img-responsive" src="' + data.responseData.results[0].url + '"></a><h3 class="text-center">' + data.echo + '</h3></div>');
+    }, 'json');
   }
 
   if (typeof ids === "undefined") {
@@ -131,9 +133,7 @@ function drawEntities(data) {
     var labels = article_header.siblings('.labels');
     for (var j = 0; j < data[ids[i]].length; j++) {
       var entity = data[ids[i]][j];
-      $.post('http://' + url + '/api/images', {query: entity}, function(data) {
-        labels.append('<a href="#" class="linked label label-default"><img class="img-responsive" src="' + data.responseData.results[0].url + '"></a>');
-      }, 'json');
+      labels.append('<a href="#" class="linked label label-default">' + entity + '</a>');
     }
   }
 
