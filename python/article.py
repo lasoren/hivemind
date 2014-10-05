@@ -20,7 +20,7 @@ class ArticleExtractor(object):
 class EntityFinder(object):
 
 	ENTITY_TYPES = ['companies_eng', 'organizations', 'universities', 'people_eng']
-	MIN_SCORE = 0.1
+	MIN_SCORE = 0.03
 	
 	def entities(self, article):
 		args = {'text': article.text, 'entity_type': EntityFinder.ENTITY_TYPES, 'show_alternatives': False}
