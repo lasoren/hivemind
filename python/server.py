@@ -22,6 +22,13 @@ def initialize():
     app.sentiment_cache = {}
     app.single_url_entity_cache = {}
 
+@app.route('/api/images', methods=['POST'])
+def images():
+    query = request.form['query']
+    query = query.replace(" ", "%20")
+    
+    return Response(requests.get("http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + query).text, mimetype='application/json')
+
 @app.route('/api/articles', methods=['POST'])
 def articles():
     error = None
