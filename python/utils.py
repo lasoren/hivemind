@@ -62,7 +62,9 @@ def get_article_sentiment(url):
             line_sentences = line.strip().split(".")
             sentences = sentences + line_sentences
     sentences = extract_n_sentences(sentences, NUM_SENTENCES)
-
+    article_body = ""
+    for s in sentences:
+        article_body += s+"."
     article_sentiment = isent.find_sentence_sentiment(article_body)
 
     num_sentences = len(sentences)
