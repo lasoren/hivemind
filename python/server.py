@@ -15,6 +15,8 @@ app = Flask(__name__)
 @app.route('/api/articles', methods=['POST'])
 def articles():
     error = None
+    if not hasattr(threading.current_process(), "_children"):
+        threading.current_process()._children = weakref.WeakKeyDictionary()
     if request.method == 'POST':
         query = request.form['query']
         query = query.replace(" ", "%20")
