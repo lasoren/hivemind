@@ -152,9 +152,9 @@ def entity():
     if request.method == 'POST':
         url = str(request.form['url'])
         start_url = deepcopy(url)
-        if url in app.single_url_entity_cache:
+        if start_url in app.single_url_entity_cache:
             return Response(
-                json.dumps(app.sentiment_cache[start_url]),
+                json.dumps(app.single_url_entity_cache[start_url]),
                 mimetype='application/json')
         entities = []
         utils.get_article_entities(url, entities, False)
