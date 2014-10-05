@@ -56,25 +56,8 @@ def get_article_sentiment(url, title, articles):
     article = Article(url)
     article_body = article.text
     lines = article_body.split("\n")
-    sentences = []
-    for line in lines:
-        if len(line) != 0:
-            line_sentences = line.strip().split(".")
-            sentences = sentences + line_sentences
-    sentences = extract_n_sentences(sentences, NUM_SENTENCES)
-    article_body = ""
-    for s in sentences:
-        article_body += s+"."
     article_sentiment = isent.find_sentence_sentiment(article_body)
 
-    num_sentences = len(sentences)
-    if num_sentences == 0:
-        result = {}
-        result["snippet"] = ""
-        result["sentiment"] = 0.5
-        result["title"] = title
-        articles.append(result)
-        return
     result = {}
     result["snippet"] = article.summary
     result["sentiment"] = article_sentiment
