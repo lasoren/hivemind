@@ -115,7 +115,9 @@ function drawEntities(data) {
   for (var i = 0; i < entities.length; i++) {
     var entity = entities[i];
     $.post('http://' + url + '/api/images', {query: entity}, function(data) {
-      holder.append('<div class="thumbnail"><img class="img-responsive" src="' + data.responseData.results[0].url + '"><a href="#" class="list-group-item linked"><h3 class="text-center">' + data.echo + '</h3></a></div>');
+      if (typeof data.responseData !== "undefined") {
+        holder.append('<div class="thumbnail"><img class="img-responsive" src="' + data.responseData.results[0].url + '"><a href="#" class="list-group-item linked"><h3 class="text-center">' + data.echo + '</h3></a></div>');
+      }
     }, 'json');
   }
 
