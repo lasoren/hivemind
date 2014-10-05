@@ -64,8 +64,8 @@ def articles():
 	    index = 0
         for key in articles:
             info = {}
-	    info["id"] = index
-	    index += 1
+            info["id"] = index
+            index += 1
             info["title"] = articles[key]["title"]
             info["link"] = key
             sentiments.append(articles[key]["sentiment"])
