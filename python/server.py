@@ -63,7 +63,7 @@ def articles():
         result["sentiment"] = average_sentiment
         return Response(json.dumps(result), mimetype='application/json')
 
-@app.route('/api/articles', methods=['POST'])
+@app.route('/api/entities', methods=['POST'])
 def entities():
     error = None
     if request.method == 'POST':
