@@ -39,6 +39,12 @@ def articles():
             titles = titles[2:]
 
         num_links = len(links)
+	num_titles = len(titles)
+	if num_titles < num_links:
+	    links = links[:num_titles]
+	if num_links < num_titles:
+	    titles = titles[:num_links]
+
         articles = []
         pool = ThreadPool(num_links)
         for i in range(num_links):
