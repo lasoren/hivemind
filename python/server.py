@@ -212,7 +212,7 @@ def entities():
             for entity in entity_list:
                 entity_dict[entity] += 1
         entities_list = list(sorted(entity_dict.items(), key=lambda x: x[1]))
-        if len(entities_list > 5):
+        if len(entities_list) > 5:
             entities_list = entities_list[:5]
 
         fix_entities = False
