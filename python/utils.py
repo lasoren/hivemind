@@ -55,7 +55,6 @@ def find_titles(titles, response):
 def get_article_sentiment(url):
     article = Article(url)
     article_body = article.text
-    print article_body
     lines = article_body.split("\n")
     sentences = []
     for line in lines:
