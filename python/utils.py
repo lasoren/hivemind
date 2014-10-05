@@ -38,7 +38,7 @@ def find_links(links, response):
         full = response[l+LINK_LENGTH:e]
         u = full.find(URL)
         links.append(full[u+URL_LENGTH:])
-        return find_links(links, response[e+END_LINK_LENGTH:])
+        return find_links(links, response[e+END_LINK_LENGTH-1:])
 
 
 def find_titles(titles, response):
@@ -49,7 +49,7 @@ def find_titles(titles, response):
         e = response.find(END_TITLE)
         full = response[l+TITLE_LENGTH:e]
         titles.append(full)
-        return find_titles(titles, response[e+END_TITLE_LENGTH:])
+        return find_titles(titles, response[e+END_TITLE_LENGTH-1:])
 
 
 def get_article_sentiment(url, title, articles):
