@@ -19,6 +19,8 @@ def initialize():
     app.pool = ThreadPool(5)
     app.cache = {}
     app.entity_cache = {}
+    app.sentiment_cache = {}
+    app.single_url_entity_cache = {}
 
 @app.route('/api/articles', methods=['POST'])
 def articles():
@@ -87,6 +89,10 @@ def sentiment():
     if request.method == 'POST':
         query = request.form['query']
         query = query.replace(" ", "%20")
+        if query in app.sentiment_cache:
+            return Response(
+                json.dumps(app.sentiment_cache[query]),
+                mimetype='application/json')
         url = GOOGLE_NEWS_RSS+query
         response = requests.get(url).text
 
@@ -128,6 +134,7 @@ def sentiment():
             sentiments,
             len(sentiments))
         result["sentiment"] = average_sentiment
+        app.sentiment_cache[query] = deepcopy(result)
         return Response(json.dumps(result), mimetype='application/json')
 
 
@@ -136,12 +143,16 @@ def entity():
     error = None
     if request.method == 'POST':
         url = request.form['url']
+        if url in app.single_url_entity_cache:
+            return Response(
+                json.dumps(app.sentiment_cache[url]),
+                mimetype='application/json')
         entities = []
         utils.get_article_entities(url, entities)
         result = {}
         entities_list = [word.title() for word in entities[0]]
         result["entities"] = entities_list
-
+        app.single_url_entity_cache[url] = deepcopy(result)
         return Response(json.dumps(result), mimetype='application/json') 
 
 @app.route('/api/entities', methods=['POST'])
