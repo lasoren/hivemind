@@ -58,6 +58,7 @@
 
 h1, h2 {
   margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .snippet {
@@ -68,4 +69,8 @@ h1, h2 {
   .swarm {
     margin-top: 10px;
   }
+}
+
+.label {
+  display: inline-block;
 }
