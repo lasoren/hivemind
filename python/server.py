@@ -41,7 +41,8 @@ def articles():
         articles= []
         pool = ThreadPool(num_links)
         for i in range(num_links):
-            pool.add_task(get_article_sentiment, links[i], articles)
+            pool.add_task(
+                utils.get_article_sentiment, links[i], articles)
         pool.wait_completion()
 
         sentiments = []
