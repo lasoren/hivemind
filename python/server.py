@@ -12,7 +12,7 @@ query = "iphone"
 
 app = Flask(__name__)
 
-@app.route('/articles', methods=['POST'])
+@app.route('/api/articles', methods=['POST'])
 def articles():
     error = None
     if request.method == 'POST':
