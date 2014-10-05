@@ -28,16 +28,21 @@ def articles():
         # Get article links from the RSS
         links = []
         utils.find_links(links, response)
-        links = links[2:]
+        if len(links) > 1:
+            links = links[2:]
 
         # Get article titles from the RSS
         titles = []
         utils.find_titles(titles, response)
+        if len(titles) > 1:
+            titles = titles[2:]
 
         num_links = 5
-        articles = app.pool.map(utils.get_article_sentiment, links[:num_links])
+        pool = ThreadPool(processes=num_links)
+        articles = pool.map(utils.get_article_sentiment, links[:num_links])
+        # articles = []
         # for i in range(num_links):
-        # utils.get_article_sentiment(links[0])
+        #     articles.append(utils.get_article_sentiment(links[i]))
 
         sentiments = []
 
