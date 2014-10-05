@@ -1,4 +1,4 @@
-from multiprocessing.pool import ThreadPool
+from thread_pool import ThreadPool
 import requests
 import utils
 
@@ -23,12 +23,13 @@ utils.find_titles(titles, response)
 if len(titles) > 1:
     titles = titles[2:]
 
-num_links = 5
-pool = ThreadPool(processes=num_links)
-articles = pool.map(utils.get_article_sentiment, links[:num_links])
-# articles = []
-# for i in range(num_links):
-#     articles.append(utils.get_article_sentiment(links[i]))
+num_links = len(links)
+articles = []
+pool = ThreadPool(num_links)
+for i in range(num_links):
+    pool.add_task(
+        utils.get_article_sentiment, links[i], articles)
+pool.wait_completion()
 
 sentiments = []
 
