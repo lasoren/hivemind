@@ -103,7 +103,7 @@ def entities():
                     previous_set = final_set
         entities_list = list(previous_set)
         result = {}
-        result["entities"] = entitites_list
+        result["entities"] = entities_list
         return Response(json.dumps(result), mimetype='application/json')
 
 
