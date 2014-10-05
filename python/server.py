@@ -211,14 +211,32 @@ def entities():
                 if len(final_set) > 5:
                     previous_set = final_set
         entities_list = [word.title() for word in previous_set]
-        result["entities"] = entities_list
+        if len(entities_list) > 5:
+            entities_list = entities_list[:5]
+
+        fix_entities = False
+        if not entities_list:
+            fix_entities = True
 
         if num_entities > 0:
             entities_set = entities[0]
+            if fix_entities:
+                if len(entities[0]) > 3:
+                    entities_list = [word.title() for word in entities[0][:3]]
+                else:
+                    entities_list = [word.title() for word in entities[0]]
             result[0] = [word.title() for word in entities[0]]
             for i in range(1, num_entities):
+                if fix_entities and len(entities_list) < 3:
+                    if len(entities[i]) + len(entities_list) > 3:
+                        entities_list.extend([word.title() for word in entities[i][:3-len(entities_list)]])
+                    else:
+                        entities_list.extend([word.title() for word in entities[i]])
                 result[i] = [word.title() for word in entities[i]]
+
+        result["entities"] = entities_list
         app.entity_cache[query] = deepcopy(result)
+
 
         return Response(json.dumps(result), mimetype='application/json')
 
