@@ -13,6 +13,7 @@ $.post('http://' + url + '/api/entity', {url: document.URL}, function (entity_da
         console.log(entity);
         var red = Math.round(Math.round(100 - sentiment*100) * 255 / 100);
         var green = Math.round(Math.round(sentiment*100) * 255 / 100);
+	var blue = Math.round(255 - Math.abs(red - green));
         $('body *').replaceText(entity, '<span style="color: rgb(' + red + ', ' + green + ', 0);">' + entity + '</span>');
       }, 'json')
     }
