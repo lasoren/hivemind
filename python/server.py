@@ -5,6 +5,7 @@ from flask import request
 from thread_pool import ThreadPool
 import requests
 import utils
+import json
 
 GOOGLE_NEWS_RSS = "https://news.google.com/news/feeds?output=rss&q="
 SPACE = "%20"
