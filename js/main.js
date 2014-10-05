@@ -24,10 +24,13 @@ $(function(){
     $('.query').val(text);
     startQuery();
   });
+
+  $(window).resize(resizer);
 });
 
 function startQuery() {
   $('.body-section').addClass('hidden').removeClass('animated fadeIn');
+  $('.related .list-group').empty();
   startLoading();
   removeHeader();
 
@@ -59,6 +62,13 @@ function removeHeader() {
 
 function finishLoading() {
   $('.loading').addClass('animated fadeOut').removeClass('fadeIn');
+}
+
+function resizer() {
+  var sentiment = $('.sentiment-like');
+  var success_bar = $('.progress-bar-success');
+
+  sentiment.css({'margin-left': success_bar.width() + 'px'});
 }
 
 function drawPercentage(percentage) {
