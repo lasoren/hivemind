@@ -222,14 +222,14 @@ def entities():
             entities_set = entities[0]
             if fix_entities:
                 if len(entities[0]) > 3:
-                    entities_list = [word.title() for word in entities[0][:3]]
+                    entities_list = [word.title() for word in list(entities[0])[:3]]
                 else:
                     entities_list = [word.title() for word in entities[0]]
             result[0] = [word.title() for word in entities[0]]
             for i in range(1, num_entities):
                 if fix_entities and len(entities_list) < 3:
                     if len(entities[i]) + len(entities_list) > 3:
-                        entities_list.extend([word.title() for word in entities[i][:3-len(entities_list)]])
+                        entities_list.extend([word.title() for word in list(entities[i])[:3-len(entities_list)]])
                     else:
                         entities_list.extend([word.title() for word in entities[i]])
                 result[i] = [word.title() for word in entities[i]]
