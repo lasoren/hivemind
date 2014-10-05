@@ -61,7 +61,7 @@ def articles():
 
         result = {}
         result["articles"] = []
-	    index = 0
+        index = 0
         for key in articles:
             info = {}
             info["id"] = index
