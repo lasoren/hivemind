@@ -1,5 +1,4 @@
 import idol_sentiment as isent
-from multiprocessing import Pool
 from article import *
 
 LINK = "<link>"
