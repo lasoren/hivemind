@@ -1,6 +1,6 @@
 import idol_sentiment as isent
 from multiprocessing import Pool
-from idol_api import *
+from article import *
 
 LINK = "<link>"
 LINK_LENGTH = len(LINK)
@@ -54,8 +54,9 @@ def find_titles(titles, response):
 
 
 def get_article_sentiment(url):
-    article = idol_api.Article(url)
+    article = Article(url)
     article_body = article.text
+    print article_body
     lines = article_body.split("\n")
     sentences = []
     for line in lines:

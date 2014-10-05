@@ -1,4 +1,5 @@
-from multiprocessing import Pool
+import multiprocessing
+from multiprocessing.pool import ThreadPool
 import requests
 import utils
 
@@ -21,10 +22,10 @@ titles = []
 utils.find_titles(titles, response)
 
 num_links = len(links)
-pool = Pool(processes=num_links)
+pool = ThreadPool(processes=num_links)
 articles = pool.map(utils.get_article_sentiment, links)
 # for i in range(num_links):
-# utils.get_article_sentiment(links[0])
+#utils.get_article_sentiment(links[0])
 
 sentiments = []
 

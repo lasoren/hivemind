@@ -4,9 +4,11 @@ from idol_api import *
 
 class ArticleExtractor(object):
 
-	@staticmethod
-	def extract(article):
-		extractor = Extractor(extractor='ArticleExtractor', url=article.url)
+	def extract(self, article):
+		try:
+			extractor = Extractor(extractor='ArticleExtractor', url=article.url)
+		except Exception as e:
+			return e.msg
 		article_text = ''
 		try:
 			article_text = extractor.getText()
@@ -20,8 +22,7 @@ class EntityFinder(object):
 	ENTITY_TYPES = ['companies_eng', 'organizations', 'universities', 'people_eng']
 	MIN_SCORE = 0.1
 	
-	@staticmethod
-	def entities(article):
+	def entities(self, article):
 		args = {'text': article.text, 'entity_type': EntityFinder.ENTITY_TYPES, 'show_alternatives': True}
 		r = APIRequest(APIEndpoints.EXTRACT_ENTITIES, args).response()
 		res = []
@@ -37,8 +38,7 @@ class TokenFinder(object):
 	MAX_TERMS = 50
 	MAX_FILTERED_TERMS = 8
 
-	@staticmethod
-	def tokens(article):
+	def tokens(self, article):
 		args = {'text': article.text, 'stemming': False, 'max_terms': TokenFinder.MAX_TERMS}
 		r = APIRequest(APIEndpoints.TOKENIZE_TEXT, args).response()
 		candidates = []
@@ -54,12 +54,12 @@ class TokenFinder(object):
 
 class Article(object):
 
-	def __init__(self, url, title='', extractor=ArticleExtractor, entity_finder=EntityFinder, token_finder=TokenFinder):
+	def __init__(self, url, title=''):
 		self.url = url
 		self.title = title
-		self._extractor = extractor
-		self._entity_finder = entity_finder
-		self._token_finder = token_finder
+		self._extractor = ArticleExtractor()
+		self._entity_finder = EntityFinder()
+		self._token_finder = TokenFinder()
 		self._text = None
 		self._entities = None
 		self._tokens = None
