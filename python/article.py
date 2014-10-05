@@ -23,7 +23,7 @@ class EntityFinder(object):
 	MIN_SCORE = 0.1
 	
 	def entities(self, article):
-		args = {'text': article.text, 'entity_type': EntityFinder.ENTITY_TYPES, 'show_alternatives': True}
+		args = {'text': article.text, 'entity_type': EntityFinder.ENTITY_TYPES, 'show_alternatives': False}
 		r = APIRequest(APIEndpoints.EXTRACT_ENTITIES, args).response()
 		res = []
 		for candidate in r['entities']:
@@ -54,7 +54,7 @@ class TokenFinder(object):
 
 class Article(object):
 
-	MAX_SUMMARY_LEN = 150 # characters
+	MAX_SUMMARY_LEN = 120 # characters
 
 	def __init__(self, url, title=''):
 		self.url = url
@@ -97,11 +97,14 @@ class Article(object):
 		if len(summary) < Article.MAX_SUMMARY_LEN:
 			return summary
 		elif summary.find('.') >= 0:
-			return summary[:summary.find('.')+1]
+			i = summary.find('.')
+			while i < self.MAX_SUMMARY_LEN * 0.75:
+				i = summary.find('.', i + 1)
+			return summary[:i+1]
 		else:
 			return summary[:Article.MAX_SUMMARY_LEN]
 
 if __name__ == '__main__':
-	a = Article('http://www.csmonitor.com/USA/2014/1004/Many-Ebola-inquiries-around-the-US-but-just-one-confirmed-case-so-far-video', 'blank')
+	a = Article('http://online.wsj.com/articles/book-review-how-google-works-by-eric-schmidt-and-jonathan-rosenberg-1412371982', 'blank')
 	print a.summary
 	print a.all_entities
