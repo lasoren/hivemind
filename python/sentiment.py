@@ -13,19 +13,22 @@ response = requests.get(url).text
 # Get article links from the RSS
 links = []
 utils.find_links(links, response)
-if len(links) > 1:
+if len(links) > 2:
     links = links[2:]
 
 # Get article titles from the RSS
 titles = []
 utils.find_titles(titles, response)
-if len(titles) > 1:
+if len(titles) > 2:
     titles = titles[2:]
 
-for i in range(len(links)):
-    print(links[i], titles[i])
-
 num_links = len(links)
+num_titles = len(titles)
+if num_titles < num_links:
+    links = links[:num_titles]
+if num_links < num_titles:
+    titles = titles[:num_links]
+
 articles = []
 pool = ThreadPool(num_links)
 for i in range(num_links):
