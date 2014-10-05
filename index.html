@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HiveMind</title>
     <link href="css/bootstrap.css" rel="stylesheet" media="screen">
-    <link rel="stylesheet" href="css/wobblebar.css" type="text/css">
+    <link rel="stylesheet" href="css/animate.css" type="text/css">
+    <link rel="stylesheet" href="css/whirly.css" type="text/css">
     <link href="css/main.css" rel="stylesheet" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:700' rel='stylesheet' type='text/css'>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -16,29 +18,57 @@
     <![endif]-->
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/raphael.min.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
   </head>
   <body>
-    <div class="wobblebar">
-    Loading...
+    <div class="centered-as-fuck loading">
+      <div class="whirly">
+      Loading...
+      </div>
     </div>
-    <div class="body container-fluid full-height">
-      <div class="row full-height">
-        <div class="col-xs-2 full-height left-side-section">
-          <h1>Some shit</h1>
-        </div>
+    <div class="body container-fluid">
+      <div class="row">
+        <div class="col-xs-2"></div>
         <div class="col-xs-8">
           <div class="row">
             <div class="col-xs-4 col-xs-offset-4">
               <img src="img/hm.png" class="img-responsive img-center logo" alt="HiveMind Logo">
             </div>
           </div>
-          <div class="input-group">
-            <input type="text" class="form-control input-lg" id="query" placeholder="Enter query">
-            <span type="button" class="btn btn-danger btn-lg input-group-addon">Swarm</span>
+          <div class="row query-box">
+            <div class="col-xs-10">
+              <input type="text" class="query form-control input-lg" id="query" placeholder="Enter query">
+            </div>
+            <div class="col-xs-2">
+              <button type="button" class="swarm btn btn-danger btn-lg btn-block">Swarm</button>
+            </div>
           </div>
-          <div class="related">
+          <div class="row analysis hidden">
+            <div class="col-xs-2">
+              <img src="img/dislike.png" class="img-responsive dislike svg-img" alt="Dislike">
+            </div>
+            <div class="col-xs-8">
+              <div class="sentiment invisible">Text</div>
+              <div class="progress">
+                <div class="progress-bar progress-bar-danger" style="width: 0%"></div>
+                <div class="progress-bar progress-bar-success" style="width: 0%"></div>
+              </div>
+            </div>
+            <div class="col-xs-2">
+              <img src="img/like.png" class="img-responsive like svg-img" alt="Like">
+            </div>
+          </div>
+          <div class="articles row hidden">
+            <div class="col-lg-2">
+              <h2>Related</h2>
+            </div>
+            <div class="col-lg-8 articles-holder">
+            </div>
+            <div class="col-lg-2">
+              <h2>Related</h2>
+            </div>
+          </div>
+          <div class="related row hidden">
             <h2>
               Related Queries:
               <span class="label label-danger">Obama</span>
@@ -46,14 +76,9 @@
               <span class="label label-danger">Baby Drama</span>
             </h2> 
           </div>
-          <div class="analysis">
-
-            <div class="canvas"></div>
-          </div>
         </div>
-        <div class="col-xs-2 full-height right-side-section">
-          <h1>Related Searches</h1>
         </div>
+        <div class="col-xs-2"></div>
       </div>
     </div>
   </body>
