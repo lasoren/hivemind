@@ -69,11 +69,16 @@ def get_article_sentiment(url, articles):
 
     num_sentences = len(sentences)
     if num_sentences == 0:
-        return "", 0
+        return
     result = {}
-    result["snippet"] = max(sentences, key=len)
+    result["snippet"] = article.summary
     result["sentiment"] = article_sentiment
     articles.append(result)
+
+
+def get_article_entities(url, entities):
+    article = Article(url)
+    entities.append(article.all_entities)
 
 
 def average_sentiment(sentiments, num_links):

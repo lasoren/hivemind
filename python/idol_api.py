@@ -26,7 +26,7 @@ class APIRequest(object):
                     extra_args += argk + '=' + v + '&'
             else:
                 filtered_args[argk] = argv
-        args = urllib.urlencode(filtered_args) 
+        args = urllib.urlencode(filtered_args)
         if extra_args:
             args += '&' + extra_args[:-1]
         return args
