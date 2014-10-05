@@ -101,16 +101,26 @@ def entities():
         pool.wait_completion()
 
         num_entities = len(entities)
-	if num_entities > 0:
-	    entities_set = entities[0]
-	    for i in range(1, num_entities):
-		entities_set.union(entities[i])
-	    entities_list = [word.title() for word in entities_set]
-	    result = {}
+        if num_entities > 0:
+            previous_set = entities[0]
+            final_set = entities[0]
+            index = 1
+            while index < num_entities and len(final_set) > 5:
+                final_set = previous_set.intersection(entities[index])
+                if len(final_set) > 5:
+                    previous_set = final_set
+        entities_list = [word.title() for word in previous_set]
+
+    	if num_entities > 0:
+    	    entities_set = entities[0]
+    	    for i in range(1, num_entities):
+    		entities_set.union(entities[i])
+    	    entities_list = [word.title() for word in entities_set]
+    	    result = {}
             result["entities"] = entities_list
             return Response(json.dumps(result), mimetype='application/json')
-	result = {}
-	result["entities"] = []
+    	result = {}
+    	result["entities"] = []
         return Response(json.dumps(result), mimetype='application/json')
 	
 
