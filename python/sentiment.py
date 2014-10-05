@@ -20,9 +20,9 @@ links = links[2:]
 titles = []
 utils.find_titles(titles, response)
 
-num_links = len(links)
-pool = ThreadPool(processes=5)
-articles = pool.map(utils.get_article_sentiment, links[:5])
+num_links = 5
+pool = Pool(processes=num_links)
+articles = pool.map(utils.get_article_sentiment, links[:num_links])
 # for i in range(num_links):
 # utils.get_article_sentiment(links[0])
 
