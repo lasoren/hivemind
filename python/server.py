@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import Response
 from flask import request
-
+import json
 from thread_pool import ThreadPool
 import requests
 import utils
@@ -60,7 +60,7 @@ def articles():
 
         average_sentiment = utils.average_sentiment(sentiments, num_links)  
         result["sentiment"] = average_sentiment
-    return Response(json.dump(result), mimetype='application/json')
+    return Response(json.dumps(result), mimetype='application/json')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
