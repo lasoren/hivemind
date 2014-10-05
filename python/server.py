@@ -24,7 +24,7 @@ def initialize():
 def articles():
     error = None
     if request.method == 'POST':
-        query = lower(request.form['query'])
+        query = request.form['query'].lower()
         query = query.replace(" ", "%20")
         if query in app.cache:
             return Response(json.dumps(app.cache[query]), mimetype='application/json')
@@ -84,7 +84,7 @@ def articles():
 def entities():
     error = None
     if request.method == 'POST':
-        query = lower(request.form['query'])
+        query = request.form['query'].lower()
         query = query.replace(" ", "%20")
 	if query in app.entity_cache:
 	    return Response(json.dumps(app.entity_cache[query]), mimetype='application/json')
