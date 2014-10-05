@@ -4,9 +4,8 @@ import utils
 
 GOOGLE_NEWS_RSS = "https://news.google.com/news/feeds?output=rss&q="
 SPACE = "%20"
-query = "barack obama"
+query = "benghazi"
 
-query = request.form['query']
 query = query.replace(" ", "%20")
 url = GOOGLE_NEWS_RSS+query
 response = requests.get(url).text
