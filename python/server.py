@@ -140,11 +140,13 @@ def sentiment():
 
         result = {}
         for key in articles:
+            print query, ':', articles[key]["sentiment"]
             sentiments.append(articles[key]["sentiment"])
 
         average_sentiment = utils.average_sentiment(
             sentiments,
             len(sentiments))
+        print average_sentiment
         result["sentiment"] = average_sentiment
         result["query"] = request.form['query']
         app.sentiment_cache[query] = deepcopy(result)
