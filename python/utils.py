@@ -69,6 +69,10 @@ def get_article_sentiment(url, articles):
 
     num_sentences = len(sentences)
     if num_sentences == 0:
+        result = {}
+        result["snippet"] = ""
+        result["sentiment"] = 0.5
+        articles.append(result)
         return
     result = {}
     result["snippet"] = article.summary
