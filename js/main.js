@@ -1,53 +1,55 @@
 var url = "54.84.224.246";
-var fakeArticles = {
-  sentiment: 0.73,
-  articles: [
-    {title: "Obama Eats Children",
-     snippet: "Obama found eating small and mid-sized children"},
-    {title: "Michelle Obama Cooks",
-     snippet: "Tasty new treats coming out of the Obama household"},
-    {title: "Sharknado Approaches",
-     snippet: "A Sharknado was spotted off the coast of Uzebekastan"}
-  ]
-};
-
-var fakeEntities = {
-  entities: ["Muffins", "Al Sharpton", "Twitter", "DDR"]
-};
+var ids;
 
 $(function(){
-  $('.body').removeClass("hidden");
-  $('.loading').css({opacity: 0});
-  
   // Swarm it up
   $('.swarm').click(function() {
-    $('.articles').animate({opacity: 0}, 500, function() {
-      $('.articles-holder').empty();
-    });
-    var query = $('.query').val();
-    // Make the actual API call
-    $('.loading').animate({opacity: 1}, 500);
-    $.post('http://' + url + '/api/articles', {query: query}, function (data) {
-      //data = fakeArticles;
-      $('.analysis').css({opacity: 0})
-                    .removeClass("hidden")
-                    .animate({opacity: 1}, 500, function() {
-                      drawPercentage(Math.round(data.sentiment*100));
-                    });
-      drawArticles(data.articles);
-      $('.articles').css({opacity: 0})
-                    .removeClass("hidden")
-                    .animate({opacity: 1}, 500, function() {
-                      $('.loading').animate({opacity: 0}, 500);
-                      animateArticles();
-                    });
-   }, 'json');
-    $.post('http://' + url + '/api/entities', {query: query}, function (data) {
-        //data = fakeEntities;
-        drawEntities(data.entities);
-    }, 'json');
+    startQuery();
+  });
+
+  $('.query').keypress(function(event) {
+      if (event.which == 13) {
+        event.preventDefault();
+        startQuery();
+      }
   });
 });
+
+function startQuery() {
+  startLoading();
+  removeHeader();
+
+  var query = $('.query').val();
+  // Make the actual API call
+  $.post('http://' + url + '/api/articles', {query: query}, function (data) {
+    finishLoading();
+    drawArticles(data.articles);
+    drawPercentage(Math.round(data.sentiment*100));
+  }, 'json');
+
+  $.post('http://' + url + '/api/entities', {query: query}, function (data) {
+    drawEntities(data);
+  }, 'json');
+}
+
+
+
+function startLoading() {
+  $('.loading').removeClass('hidden').addClass('animated fadeIn');
+}
+
+function removeHeader() {
+  var logo = $('.logo');
+  if (logo.length > 0) {
+    logo.animate({height: 0}, 1000, function() {
+      logo.remove();
+    });
+  }
+}
+
+function finishLoading() {
+  $('.loading').addClass('animated fadeOut').removeClass('fadeIn');
+}
 
 function drawPercentage(percentage) {
   $('.progress-bar-success').css({width: percentage + '%'});
@@ -63,45 +65,70 @@ function drawPercentage(percentage) {
     var success_bar = $('.progress-bar-success');
 
     sentiment.css({'margin-left': success_bar.width() + 'px'})
-             .removeClass('invisible')
-             .addClass('animated bounceIn');
+             .removeClass('invisible');
                         
   });
 }
 
 function drawArticles(articles) {
   var holder = $('.articles-holder');
+  holder.empty();
+  $('.articles').removeClass('hidden');
+  ids = [];
   for (var i = 0; i < articles.length; i++) {
     var article = articles[i];
+    ids.push(article.id);
     var div =
       '<div class="row item">' + 
       '<div class="col-xs-1">';
-    if (article.sentiment >= 0.5) {
+    if (article.sentiment >= 0.6) {
       div += '<img src="img/like.png" class="img-responsive svg-img-big" alt="Dislike">'
-    } else {
+    } else if (article.sentiment <= 0.4 ){
       div += '<img src="img/dislike.png" class="img-responsive svg-img-big" alt="Dislike">'
     }
     div += '</div>' +
-           '<div class="col-xs-11">' +
+           '<div class="col-xs-11 article' + article.id + '">' +
            '<h2 class="invisible">' + article.title + '</h2>' +
            '<p class="snippet lead invisible">' + article.snippet + '</p>' +
            '</div>' +
            '</div>'
     holder.append(div);
   }
+
+  animateArticles();
 }
 
-function drawEntities(entities) {
+function drawEntities(data) {
   var holder = $('.related .list-group');
+  var entities = data.entities
+  holder.empty();
+  holder.removeClass('hidden');
   for (var i = 0; i < entities.length; i++) {
     var entity = entities[i];
-    holder.append('<a href="#" class="list-group-item">' + entity + '</a>');
+    holder.append('<a href="#" class="list-group-item linked">' + entity + '</a>');
   }
+
+  for (var i = 0; i < ids.length; i++) {
+    var article_header = $('.article' + ids[i] + ' h2');
+    article_header.after('<div class="labels"></div>');
+    var labels = article_header.siblings('.labels');
+    for (var j = 0; j < data[ids[i]].length; j++) {
+      var entity = data[ids[i]][j];
+      labels.append('<a href="#" class="linked label label-default">' + entity + '</a>');
+    }
+  }
+
+  animateEntities();
 }
 
 function animateArticles() {
-  $('.articles-holder .invisible').removeClass("invisible").addClass("animated fadeInDown");
+  $('.articles-holder .invisible').removeClass("invisible");
 }
+
+function animateEntities() {
+  $('.related').removeClass("invisible").addClass("animated fadeIn");
+}
+
 
 function getParameterByName(name) {
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
