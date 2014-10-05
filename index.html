@@ -36,10 +36,10 @@
             </div>
           </div>
           <div class="row query-box">
-            <div class="col-xs-10">
+            <div class="col-md-10">
               <input type="text" class="query form-control input-lg" id="query" placeholder="Enter query">
             </div>
-            <div class="col-xs-2">
+            <div class="col-md-2">
               <button type="button" class="swarm btn btn-danger btn-lg btn-block">Swarm</button>
             </div>
           </div>
@@ -48,10 +48,17 @@
               <img src="img/dislike.png" class="img-responsive dislike svg-img" alt="Dislike">
             </div>
             <div class="col-xs-8">
-              <div class="sentiment invisible">Text</div>
               <div class="progress">
                 <div class="progress-bar progress-bar-danger" style="width: 0%"></div>
                 <div class="progress-bar progress-bar-success" style="width: 0%"></div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6">
+                  <div class="sentiment-dislike text-center invisible">Text</div>
+                </div>
+                <div class="col-xs-6">
+                  <div class="sentiment-like text-center invisible">Text</div>
+                </div>
               </div>
             </div>
             <div class="col-xs-2">
@@ -59,22 +66,12 @@
             </div>
           </div>
           <div class="articles row hidden">
-            <div class="col-lg-2">
-              <h2>Related</h2>
-            </div>
             <div class="col-lg-8 articles-holder">
             </div>
-            <div class="col-lg-2">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-3 related">
               <h2>Related</h2>
             </div>
-          </div>
-          <div class="related row hidden">
-            <h2>
-              Related Queries:
-              <span class="label label-danger">Obama</span>
-              <span class="label label-danger">Yo Mama</span>
-              <span class="label label-danger">Baby Drama</span>
-            </h2> 
           </div>
         </div>
         </div>

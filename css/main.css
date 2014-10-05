@@ -2,18 +2,14 @@
   margin: 0 auto;
 }
 
-.analysis, .query-box, .related, .articles {
+.analysis, .query-box, .related, .articles-holder {
   border: 2px solid #111111;
-  padding: 10px;
+  padding: 5px;
   border-radius: 10px;
   margin-top: 20px;
-  box-shadow: 0px 4px 3px rgba(0,0,0,0.4),
-               0px 8px 13px rgba(0,0,0,0.1),
-               0px 18px 23px rgba(0,0,0,0.1);
 }
 
 .progress {
-  margin-top: 35px;
 }
 
 .centered-as-fuck {
@@ -24,19 +20,18 @@
   margin-left: -10px;
 }
 
-.sentiment {
-  margin-top: -5px;
-  position: absolute;
-  width: 100%;
-  font-size: 5em;
-  text-align: center;
+.sentiment-dislike {
+  color: #FF4136;
+}
+
+.sentiment-like {
+  color: #2ECC40;
+}
+
+.sentiment-like, .sentiment-dislike {
+  font-size: 2.5em;
+  font-weight: bold;
   font-family: 'Droid Sans', sans-serif;
-  z-index: 10;
-  text-shadow:
-   -1px -1px 0 #000,  
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-     1px 1px 0 #000;
 }
 
 .query-box {
@@ -52,21 +47,11 @@
 }
 
 .dislike {
-  margin-top: 25px;
   float: right;
 }
 
-.svg-container {
-  display: inline-block;
-  position: relative;
-  width: 100%;
-  padding-bottom: 100%;
-  vertical-align: middle;
-  overflow: hidden;
-}
-
 .svg-img {
-  width: 50%;
+  width: 75%;
   height auto;
 }
 
@@ -76,4 +61,10 @@ h1, h2 {
 
 .snippet {
   margin-left: 25px;
+}
+
+@media (max-width: 992px) {
+  .swarm {
+    margin-top: 10px;
+  }
 }

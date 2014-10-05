@@ -46,10 +46,10 @@ function drawPercentage(percentage) {
   $('.progress-bar-success').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
     var red = Math.round((100-percentage)*255/100);
     var green = Math.round(percentage*255/100);
-    $('.sentiment').removeClass('invisible')
-                   .addClass('animated bounceIn')
-                   .text(percentage + '%')
-                   .css({color: 'rgb(' + red + ', ' + green + ', 0)'});
+    $('.sentiment-like, .sentiment-dislike').removeClass('invisible')
+                                            .addClass('animated bounceIn')
+    $('.sentiment-like').text(Math.round(percentage) + '%');
+    $('.sentiment-dislike').text(Math.round(100-percentage) + '%');
   });
 }
 
