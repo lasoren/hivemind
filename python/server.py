@@ -142,7 +142,7 @@ def sentiment():
 def entity():
     error = None
     if request.method == 'POST':
-        url = request.form['url']
+        url = str(request.form['url'])
         if url in app.single_url_entity_cache:
             return Response(
                 json.dumps(app.sentiment_cache[url]),
@@ -161,8 +161,8 @@ def entities():
     if request.method == 'POST':
         query = request.form['query'].lower()
         query = query.replace(" ", "%20")
-	if query in app.entity_cache:
-	    return Response(json.dumps(app.entity_cache[query]), mimetype='application/json')
+        if query in app.entity_cache:
+            return Response(json.dumps(app.entity_cache[query]), mimetype='application/json')
         url = GOOGLE_NEWS_RSS+query
         response = requests.get(url).text
 
