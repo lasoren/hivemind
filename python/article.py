@@ -19,7 +19,7 @@ class ArticleExtractor(object):
 
 class EntityFinder(object):
 
-	ENTITY_TYPES = ['companies_eng', 'organizations', 'universities', 'people_eng']
+	ENTITY_TYPES = ['companies_eng', 'organizations', 'universities', 'people_eng', 'places_eng']
 	MIN_SCORE = 0.03
 
 	def entities(self, article, normalize=True):
@@ -121,7 +121,7 @@ class Article(object):
 			return summary[:Article.MAX_SUMMARY_LEN]
 
 if __name__ == '__main__':
-	a = Article('http://online.wsj.com/articles/book-review-how-google-works-by-eric-schmidt-and-jonathan-rosenberg-1412371982', 'blank')
+	a = Article('http://www.foxnews.com/politics/2014/10/05/cdc-says-no-ebola-for-district-patient-still-not-inclined-to-close-us-points/', 'blank')
 	print a.summary
 	print a.all_entities
 	print a.all_original_entities
