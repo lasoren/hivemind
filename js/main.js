@@ -126,7 +126,7 @@ function drawEntities(data) {
   for (var i = 0; i < entities.length; i++) {
     var entity = entities[i];
     $.post('http://' + url + '/api/images', {query: entity}, function(data) {
-      if (typeof data.responseData !== "undefined") {
+      if (typeof data.responseData !== "undefined" && data.responseData != null) {
         holder.append('<div class="thumbnail"><img class="img-responsive" src="' + data.responseData.results[0].url + '"><a href="#" class="list-group-item linked"><h3 class="text-center">' + data.echo + '</h3></a></div>');
       }
     }, 'json');
