@@ -219,7 +219,7 @@ def entities():
             for i in range(1, num_entities):
                 result[i] = [word.title() for word in entities[i]]
         app.entity_cache[query] = deepcopy(result)
-        result["entities"] = []
+
         return Response(json.dumps(result), mimetype='application/json')
 
 
