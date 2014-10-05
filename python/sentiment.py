@@ -6,7 +6,7 @@ GOOGLE_NEWS_RSS = "https://news.google.com/news/feeds?output=rss&q="
 SPACE = "%20"
 query = "barack obama"
 
-
+query = request.form['query']
 query = query.replace(" ", "%20")
 url = GOOGLE_NEWS_RSS+query
 response = requests.get(url).text
@@ -22,6 +22,9 @@ titles = []
 utils.find_titles(titles, response)
 if len(titles) > 1:
     titles = titles[2:]
+
+for i in range(len(links)):
+    print(links[i], titles[i])
 
 num_links = len(links)
 articles = []
