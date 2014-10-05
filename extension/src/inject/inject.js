@@ -13,7 +13,7 @@ $.post('http://' + url + '/api/entity', {url: document.URL}, function (entity_da
         console.log(entity);
         var red = Math.round(Math.round(100 - sentiment*100) * 255 / 100);
         var green = Math.round(Math.round(sentiment*100) * 255 / 100);
-        $('body *').replaceText(entity, '<span style="color: rgb(' + red + ', ' + green + ', 0);">' + entity + '</span>');
+        $('body *').replaceText(new RegExp('('+entity+')', 'gi'), '<a style="color:inherit" href="http://hivemindisaweso.me/?q=' + entity + '"><div style="display:inline; padding: 3px; background-color: rgb(' + red + ', ' + green + ', 0); border-radius:4px; border:3px;">$1</div></a>');
       }, 'json')
     }
 }, 'json');
