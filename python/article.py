@@ -26,6 +26,8 @@ class EntityFinder(object):
 		args = {'text': article.text, 'entity_type': EntityFinder.ENTITY_TYPES, 'show_alternatives': False}
 		r = APIRequest(APIEndpoints.EXTRACT_ENTITIES, args).response()
 		res = []
+		if 'entities' not in r:
+			return set()
 		for candidate in r['entities']:
 			if candidate['score'] > EntityFinder.MIN_SCORE and candidate['original_text'] != 'too':
 				res.append(candidate[('normalized_text' if normalize else 'original_text')])

@@ -75,3 +75,7 @@ h1, h2 {
   display: inline-block;
   margin-right: 5px;
 }
+
+h3.text-center {
+  text-align: center;
+}

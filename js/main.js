@@ -44,11 +44,6 @@ function startQuery() {
   }, 'json');
 }
 
-function addLabels() {
-
-}
-
-
 function startLoading() {
   $('.loading').removeClass('hidden animated fadeOut').addClass('animated fadeIn');
 }
@@ -120,12 +115,12 @@ function drawEntities(data) {
   for (var i = 0; i < entities.length; i++) {
     var entity = entities[i];
     $.post('http://' + url + '/api/images', {query: entity}, function(data) {
-      holder.append('<div class="thumbnail"><a href="#" class="list-group-item linked"><img class="img-responsive" src="' + data.responseData.results[0].url + '"></a><h3 class="text-center">' + data.echo + '</h3></div>');
+      holder.append('<div class="thumbnail"><img class="img-responsive" src="' + data.responseData.results[0].url + '"><a href="#" class="list-group-item linked"><h3 class="text-center">' + data.echo + '</h3></a></div>');
     }, 'json');
   }
 
   if (typeof ids === "undefined") {
-    debugger;
+    ids = [];
   }
   for (var i = 0; i < ids.length; i++) {
     var article_header = $('.article' + ids[i] + ' h2');
