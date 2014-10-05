@@ -157,9 +157,9 @@ def entity():
                 json.dumps(app.sentiment_cache[start_url]),
                 mimetype='application/json')
         entities = []
-        utils.get_article_entities(url, entities)
+        utils.get_article_entities(url, entities, False)
         result = {}
-        entities_list = [word.title() for word in entities[0]]
+        entities_list = [word for word in entities[0]]
         result["entities"] = entities_list
         app.single_url_entity_cache[start_url] = deepcopy(result)
         return Response(json.dumps(result), mimetype='application/json') 
@@ -195,7 +195,7 @@ def entities():
                 utils.get_article_entities, links[i], entities)
         pool.wait_completion()
 
-    	result = {}
+        result = {}
         num_entities = len(entities)
         if num_entities > 0:
             previous_set = entities[0]
@@ -208,16 +208,15 @@ def entities():
         entities_list = [word.title() for word in previous_set]
         result["entities"] = entities_list
 
-    	if num_entities > 0:
-    	    entities_set = entities[0]
-    	    result[0] = [word.title() for word in entities[0]]
-    	    for i in range(1, num_entities):
-    	        result[i] = [word.title() for word in entities[i]]
-	    app.entity_cache[query] = deepcopy(result)
-            return Response(json.dumps(result), mimetype='application/json')
-    	result["entities"] = []
+        if num_entities > 0:
+            entities_set = entities[0]
+            result[0] = [word.title() for word in entities[0]]
+            for i in range(1, num_entities):
+                result[i] = [word.title() for word in entities[i]]
+        app.entity_cache[query] = deepcopy(result)
+        result["entities"] = []
         return Response(json.dumps(result), mimetype='application/json')
-	
+
 
 
 if __name__ == "__main__":

@@ -10,16 +10,15 @@
     "128": "icons/icon128.png"
   },
   "default_locale": "en",
-  "background": {
-    "scripts": [
-      "src/bg/background.js"
-    ],
-    "persistent": true
-  },
   "content_scripts": [
     {
       "matches": [
-        "https://www.google.com/*"
+        "https://*/*"
+      ],
+      "js": [
+        "js/jquery/jquery.js",
+        "js/jquery/jquery-replacetext.js",
+        "src/inject/inject.js"
       ],
       "css": [
         "src/inject/inject.css"
@@ -27,14 +26,19 @@
     },
     {
       "matches": [
-        "https://www.google.com/*"
+        "http://*/*"
       ],
       "js": [
+        "js/jquery/jquery.js",
+        "js/jquery/jquery-replacetext.js",
         "src/inject/inject.js"
+      ],
+      "css": [
+        "src/inject/inject.css"
       ]
     }
   ],
     "permissions": [
-      "tabs"
+      "tabs", "https://www.google.com/*", "http://www.google.com/*", "http://54.84.224.246/*", "http://*/*", "https://*/*"
   ]
 }
