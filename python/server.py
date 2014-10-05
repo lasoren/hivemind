@@ -211,7 +211,7 @@ def entities():
         for entity_list in entities:
             for entity in entity_list:
                 entity_dict[entity] += 1
-        entities_list = list(sorted(entity_dict.items(), key=lambda x: x[1]))
+        entities_list = reversed(list(sorted(entity_dict.items(), key=lambda x: x[1])))
         entities_list = [x[0] for x in entities_list]
         if len(entities_list) > 5:
             entities_list = entities_list[:5]
