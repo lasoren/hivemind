@@ -18,9 +18,7 @@ $(function(){
   $('.swarm').click(function() {
     var query = $('.query').val();
     // Make the actual API call
-    //$.post('http://google.com/articles', {query: query}, function (data) {
-      //TODO(bsprague) Remove this when we have legit data
-      data = fakeArticles;
+    $.post('http://54.84.224.246/articles', {query: query}, function (data) {
       $('.analysis').css({opacity: 0})
                     .removeClass("hidden")
                     .animate({opacity: 1}, 500, function() {
@@ -32,7 +30,7 @@ $(function(){
                     .animate({opacity: 1}, 500, function() {
                       animateArticles();
                     });
-    //}, 'json');
+    }, 'json');
   });
 });
 
