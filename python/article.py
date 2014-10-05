@@ -29,7 +29,7 @@ class EntityFinder(object):
 		if 'entities' not in r:
 			return set()
 		for candidate in r['entities']:
-			if candidate['score'] > EntityFinder.MIN_SCORE and candidate['original_text'] != 'too':
+			if candidate['score'] > EntityFinder.MIN_SCORE and candidate['original_text'].lower() not in ['too', 'people', 'man']:
 				res.append(candidate[('normalized_text' if normalize else 'original_text')])
 		res = set(res)
 		return res
