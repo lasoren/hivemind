@@ -12,6 +12,10 @@ query = "iphone"
 
 app = Flask(__name__)
 
+@app.before_first_request
+def initialize():
+    app.pool = ThreadPool(5)
+
 @app.route('/api/articles', methods=['POST'])
 def articles():
     error = None
@@ -31,8 +35,7 @@ def articles():
         utils.find_titles(titles, response)
 
         num_links = 5
-        pool = ThreadPool(processes=num_links)
-        articles = pool.map(utils.get_article_sentiment, links[:num_links])
+        articles = app.pool.map(utils.get_article_sentiment, links[:num_links])
         # for i in range(num_links):
         # utils.get_article_sentiment(links[0])
 
