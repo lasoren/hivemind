@@ -134,6 +134,7 @@ def sentiment():
             sentiments,
             len(sentiments))
         result["sentiment"] = average_sentiment
+        result["query"] = request.form['query']
         app.sentiment_cache[query] = deepcopy(result)
         return Response(json.dumps(result), mimetype='application/json')
 
@@ -143,16 +144,17 @@ def entity():
     error = None
     if request.method == 'POST':
         url = str(request.form['url'])
+        start_url = deepcopy(url)
         if url in app.single_url_entity_cache:
             return Response(
-                json.dumps(app.sentiment_cache[url]),
+                json.dumps(app.sentiment_cache[start_url]),
                 mimetype='application/json')
         entities = []
         utils.get_article_entities(url, entities)
         result = {}
         entities_list = [word.title() for word in entities[0]]
         result["entities"] = entities_list
-        app.single_url_entity_cache[url] = deepcopy(result)
+        app.single_url_entity_cache[start_url] = deepcopy(result)
         return Response(json.dumps(result), mimetype='application/json') 
 
 @app.route('/api/entities', methods=['POST'])
