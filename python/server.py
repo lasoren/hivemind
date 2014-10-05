@@ -19,6 +19,8 @@ def initialize():
     app.pool = ThreadPool(5)
     app.cache = {}
     app.entity_cache = {}
+    app.sentiment_cache = {}
+    app.single_url_entity_cache = {}
 
 @app.route('/api/articles', methods=['POST'])
 def articles():
@@ -61,11 +63,11 @@ def articles():
 
         result = {}
         result["articles"] = []
-	    index = 0
+        index = 0
         for key in articles:
             info = {}
-	    info["id"] = index
-	    index += 1
+            info["id"] = index
+            index += 1
             info["title"] = articles[key]["title"]
             info["link"] = key
             sentiments.append(articles[key]["sentiment"])
@@ -87,6 +89,10 @@ def sentiment():
     if request.method == 'POST':
         query = request.form['query']
         query = query.replace(" ", "%20")
+        if query in app.sentiment_cache:
+            return Response(
+                json.dumps(app.sentiment_cache[query]),
+                mimetype='application/json')
         url = GOOGLE_NEWS_RSS+query
         response = requests.get(url).text
 
@@ -128,8 +134,28 @@ def sentiment():
             sentiments,
             len(sentiments))
         result["sentiment"] = average_sentiment
+        result["query"] = request.form['query']
+        app.sentiment_cache[query] = deepcopy(result)
         return Response(json.dumps(result), mimetype='application/json')
 
+
+@app.route('/api/entity', methods=['POST'])
+def entity():
+    error = None
+    if request.method == 'POST':
+        url = str(request.form['url'])
+        start_url = deepcopy(url)
+        if url in app.single_url_entity_cache:
+            return Response(
+                json.dumps(app.sentiment_cache[start_url]),
+                mimetype='application/json')
+        entities = []
+        utils.get_article_entities(url, entities)
+        result = {}
+        entities_list = [word.title() for word in entities[0]]
+        result["entities"] = entities_list
+        app.single_url_entity_cache[start_url] = deepcopy(result)
+        return Response(json.dumps(result), mimetype='application/json') 
 
 @app.route('/api/entities', methods=['POST'])
 def entities():
@@ -137,8 +163,8 @@ def entities():
     if request.method == 'POST':
         query = request.form['query'].lower()
         query = query.replace(" ", "%20")
-	if query in app.entity_cache:
-	    return Response(json.dumps(app.entity_cache[query]), mimetype='application/json')
+        if query in app.entity_cache:
+            return Response(json.dumps(app.entity_cache[query]), mimetype='application/json')
         url = GOOGLE_NEWS_RSS+query
         response = requests.get(url).text
 
