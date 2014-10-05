@@ -27,7 +27,9 @@ def images():
     query = request.form['query']
     query = query.replace(" ", "%20")
     
-    return Response(requests.get("http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + query).text, mimetype='application/json')
+    json_data = json.loads(requests.get("http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + query).text)
+    json_data['echo'] = query
+    return Response(json.dumps(json_data), mimetype='application/json')
 
 @app.route('/api/articles', methods=['POST'])
 def articles():
@@ -116,11 +118,13 @@ def sentiment():
             titles = titles[2:]
 
         num_links = len(links)
-        num_titles = 3
+        num_titles = len(titles)
+        if num_titles > 3:
+            num_titles = 3
         if num_titles < num_links:
             links = links[:num_titles]
-        num_titles = len(links)
-        num_links = 3
+        if num_links > 3:
+            num_links = 3
         if num_links < num_titles:
             titles = titles[:num_links]
 
