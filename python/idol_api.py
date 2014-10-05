@@ -6,7 +6,8 @@ import json
 class APIEndpoints(object):
 
     EXTRACT_ENTITIES = 'https://api.idolondemand.com/1/api/sync/extractentities/v1'
-    GET_SENTIMENT = "https://api.idolondemand.com/1/api/sync/detectsentiment/v1"
+    TOKENIZE_TEXT = 'https://api.idolondemand.com/1/api/sync/tokenizetext/v1'
+    GET_SENTIMENT = 'https://api.idolondemand.com/1/api/sync/detectsentiment/v1'
 
 
 class DefaultAPIConfig(object):

@@ -44,7 +44,6 @@ class TokenFinder(object):
 		for candidate in r['terms']:
 			candidates.append(candidate)
 		candidates.sort(key=lambda x: x['weight'])
-		print candidates
 		candidates = [candidate['term'] for candidate in reversed(candidates) if candidate['weight'] >= 100]
 		if len(candidates) >= TokenFinder.MAX_FILTERED_TERMS:
 			return set(candidates[:TokenFinder.MAX_FILTERED_TERMS])
@@ -54,7 +53,7 @@ class TokenFinder(object):
 
 class Article(object):
 
-	def __init__(self, url, title, extractor=ArticleExtractor, entity_finder=EntityFinder, token_finder=TokenFinder):
+	def __init__(self, url, title='', extractor=ArticleExtractor, entity_finder=EntityFinder, token_finder=TokenFinder):
 		self.url = url
 		self.title = title
 		self._extractor = extractor
@@ -89,4 +88,5 @@ class Article(object):
 	def _format_words(self, words):
 		return [word.title() for word in words]
 
-print Article('http://www.christiantoday.com/article/iphone.6.problems.bendgate.still.continues.apple.mocked.videos.memes/41216.htm', 'blank').all_entities
+if __name__ == '__main__':
+	print Article('http://www.christiantoday.com/article/iphone.6.problems.bendgate.still.continues.apple.mocked.videos.memes/41216.htm', 'blank').all_entities
