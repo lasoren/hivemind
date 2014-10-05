@@ -138,7 +138,7 @@ def entity():
         url = request.form['url']
         entities = []
         utils.get_article_entities(url, entities)
-
+        result = {}
         entities_list = [word.title() for word in entities[0]]
         result["entities"] = entities_list
 
