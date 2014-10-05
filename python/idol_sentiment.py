@@ -8,6 +8,6 @@ def find_sentence_sentiment(sentence):
     args = {'text':sentence}
     response = APIRequest(APIEndpoints.GET_SENTIMENT, args).response()
     try:
-        return response["aggregate"]["score"]
+        return (response["aggregate"]["score"]+1)/2.0
     except KeyError:
-        return 0
+        return 0.5

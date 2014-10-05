@@ -68,7 +68,6 @@ def get_article_sentiment(url, articles):
     article_sentiment = isent.find_sentence_sentiment(article_body)
 
     num_sentences = len(sentences)
-    # article_sentiment = average_sentiment(sentiments, num_sentences)
     if num_sentences == 0:
         return "", 0
     result = {}

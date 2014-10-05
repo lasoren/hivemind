@@ -38,8 +38,8 @@ def articles():
         if len(titles) > 1:
             titles = titles[2:]
 
-        num_links = 5
-        articles= []
+        num_links = len(num_links)
+        articles = []
         pool = ThreadPool(num_links)
         for i in range(num_links):
             pool.add_task(
