@@ -31,6 +31,7 @@ $(function(){
 function startQuery() {
   $('.body-section').addClass('hidden').removeClass('animated fadeIn');
   $('.related .list-group').empty();
+
   startLoading();
   removeHeader();
 
