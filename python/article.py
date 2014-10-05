@@ -8,7 +8,7 @@ class ArticleExtractor(object):
 		try:
 			extractor = Extractor(extractor='ArticleSentencesExtractor', url=article.url)
 		except Exception as e:
-			return repr(e)
+			return ''
 		article_text = ''
 		try:
 			article_text = extractor.getText()
@@ -43,6 +43,8 @@ class TokenFinder(object):
 		args = {'text': article.text, 'stemming': False, 'max_terms': TokenFinder.MAX_TERMS}
 		r = APIRequest(APIEndpoints.TOKENIZE_TEXT, args).response()
 		candidates = []
+		if 'terms' not in r:
+			return set()
 		for candidate in r['terms']:
 			candidates.append(candidate)
 		candidates.sort(key=lambda x: x['weight'])
