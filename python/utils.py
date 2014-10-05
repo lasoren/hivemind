@@ -38,7 +38,7 @@ def find_links(links, response):
         full = response[l+LINK_LENGTH:e]
         u = full.find(URL)
         links.append(full[u+URL_LENGTH:])
-        return find_links(links, response[e+END_LINK_LENGTH:])
+        return find_links(links, response[e+END_LINK_LENGTH-1:])
 
 
 def find_titles(titles, response):
@@ -49,35 +49,20 @@ def find_titles(titles, response):
         e = response.find(END_TITLE)
         full = response[l+TITLE_LENGTH:e]
         titles.append(full)
-        return find_titles(titles, response[e+END_TITLE_LENGTH:])
+        return find_titles(titles, response[e+END_TITLE_LENGTH-1:])
 
 
-def get_article_sentiment(url, articles):
+def get_article_sentiment(url, title, articles):
     article = Article(url)
     article_body = article.text
     lines = article_body.split("\n")
-    sentences = []
-    for line in lines:
-        if len(line) != 0:
-            line_sentences = line.strip().split(".")
-            sentences = sentences + line_sentences
-    sentences = extract_n_sentences(sentences, NUM_SENTENCES)
-    article_body = ""
-    for s in sentences:
-        article_body += s+"."
     article_sentiment = isent.find_sentence_sentiment(article_body)
 
-    num_sentences = len(sentences)
-    if num_sentences == 0:
-        result = {}
-        result["snippet"] = ""
-        result["sentiment"] = 0.5
-        articles.append(result)
-        return
     result = {}
     result["snippet"] = article.summary
     result["sentiment"] = article_sentiment
-    articles.append(result)
+    result["title"] = title
+    articles[url] = result
 
 
 def get_article_entities(url, entities):
@@ -86,7 +71,19 @@ def get_article_entities(url, entities):
 
 
 def average_sentiment(sentiments, num_links):
-    return sum(sentiments) / float(num_links)
+    final_sum = 0
+    for score in sentiments:
+        if score > 0.5:
+            final_sum += 2/float(num_links)
+        elif score < 0.5:
+            final_sum -= 2/float(num_links)
+    final_sum += sum(sentiments)
+    ave = final_sum / float(num_links)
+    if ave > 1:
+        ave = 1
+    if ave < 0:
+        ave = 0
+    return ave
 
 
 def extract_n_sentences(sentences, n):
