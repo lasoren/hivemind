@@ -8,7 +8,7 @@ class ArticleExtractor(object):
 		try:
 			extractor = Extractor(extractor='ArticleSentencesExtractor', url=article.url)
 		except Exception as e:
-			return e.msg
+			return repr(e)
 		article_text = ''
 		try:
 			article_text = extractor.getText()
