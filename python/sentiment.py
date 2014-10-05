@@ -14,11 +14,14 @@ response = requests.get(url).text
 # Get article links from the RSS
 links = []
 utils.find_links(links, response)
-links = links[2:]
+if len(links) > 1:
+    links = links[2:]
 
 # Get article titles from the RSS
 titles = []
 utils.find_titles(titles, response)
+if len(titles) > 1:
+    titles = titles[2:]
 
 num_links = 5
 pool = ThreadPool(processes=num_links)
