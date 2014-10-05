@@ -52,7 +52,7 @@ def find_titles(titles, response):
         return find_titles(titles, response[e+END_TITLE_LENGTH:])
 
 
-def get_article_sentiment(url):
+def get_article_sentiment(url, articles):
     article = Article(url)
     article_body = article.text
     lines = article_body.split("\n")
@@ -74,7 +74,7 @@ def get_article_sentiment(url):
     result = {}
     result["snippet"] = max(sentences, key=len)
     result["sentiment"] = article_sentiment
-    return result
+    articles.append(result)
 
 
 def average_sentiment(sentiments, num_links):

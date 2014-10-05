@@ -2,7 +2,7 @@ from flask import Flask
 from flask import Response
 from flask import request
 
-from multiprocessing.pool import ThreadPool
+from thread_pool import ThreadPool
 import requests
 import utils
 
@@ -38,11 +38,11 @@ def articles():
             titles = titles[2:]
 
         num_links = 5
+        articles= []
         pool = ThreadPool(processes=num_links)
-        articles = pool.map(utils.get_article_sentiment, links[:num_links])
-        # articles = []
-        # for i in range(num_links):
-        #     articles.append(utils.get_article_sentiment(links[i]))
+        for i in range(num_links):
+            pool.add_task(get_article_sentiment, links[i], articles)
+        pool.wait_completion()
 
         sentiments = []
 
