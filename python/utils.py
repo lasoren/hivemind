@@ -74,9 +74,9 @@ def average_sentiment(sentiments, num_links):
     final_sum = 0
     for score in sentiments:
         if score > 0.6:
-            final_sum += 0.5
+            final_sum += 2/num_links
         elif score < 0.4:
-            final_sum -= 0.5
+            final_sum -= 2/num_links
     final_sum += sum(sentiments)
     return final_sum / float(num_links)
 
