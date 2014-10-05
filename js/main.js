@@ -3,7 +3,7 @@ var ids;
 
 $(function(){
   var query = getParameterByName('q');
-  if (typeof query !== "undefined") {
+  if (query.length > 0) {
     $('.query').val(query);
     startQuery();
   }
@@ -131,8 +131,8 @@ function drawEntities(data) {
     var labels = article_header.siblings('.labels');
     for (var j = 0; j < data[ids[i]].length; j++) {
       var entity = data[ids[i]][j];
-      $.get('http://' + url + '/api/image', {query: entity}, function(data) {
-        labels.append('<a href="#" class="linked label label-default"><img src="' + data.responseData.results[0].url + '"></a>');
+      $.post('http://' + url + '/api/images', {query: entity}, function(data) {
+        labels.append('<a href="#" class="linked label label-default"><img class="img-responsive" src="' + data.responseData.results[0].url + '"></a>');
       }, 'json');
     }
   }
