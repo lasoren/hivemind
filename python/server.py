@@ -39,7 +39,7 @@ def articles():
 
         num_links = 5
         articles= []
-        pool = ThreadPool(processes=num_links)
+        pool = ThreadPool(num_links)
         for i in range(num_links):
             pool.add_task(get_article_sentiment, links[i], articles)
         pool.wait_completion()
