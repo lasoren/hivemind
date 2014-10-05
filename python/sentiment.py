@@ -1,5 +1,5 @@
 from multiprocessing import Pool
-import urllib.request
+import requests
 import utils
 
 GOOGLE_NEWS_RSS = "https://news.google.com/news/feeds?output=rss&q="
@@ -9,8 +9,7 @@ query = "iphone 6 bendgate"
 
 query = query.replace(" ", "%20")
 url = GOOGLE_NEWS_RSS+query
-print(url)
-response = str(urllib.request.urlopen(url).read())
+response = requests.get(url).text
 
 # Get article links from the RSS
 links = []
@@ -22,10 +21,10 @@ titles = []
 utils.find_titles(titles, response)
 
 num_links = len(links)
-# pool = Pool(processes=num_links)
-# articles = pool.map(utils.get_article_sentiment, links)
+pool = Pool(processes=num_links)
+articles = pool.map(utils.get_article_sentiment, links)
 # for i in range(num_links):
-utils.get_article_sentiment(links[0])
+# utils.get_article_sentiment(links[0])
 
 sentiments = []
 

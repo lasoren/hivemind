@@ -19,8 +19,8 @@ NUM_SENTENCES = 5
 
 TEST_ARTICLE = ("My iPhone 6 Plus arrived in the mail last night, "
     "so I'm currently within the first few minutes of playing around "
-    "with it. This was the first iPhone that I ever ordered online — "
-    "my previous ones I bought in the store — and so it was the first "
+    "with it. This was the first iPhone that I ever ordered online "
+    "my previous ones I bought in the store and so it was the first "
     "time I've activated one myself. That turned out to be a breeze, "
     "so that was cool. Restoring my contacts, photos, and apps via "
     "iCloud also worked very nicely. Anyway, the iPhone has never been "
@@ -48,8 +48,7 @@ def find_titles(titles, response):
     else:
         e = response.find(END_TITLE)
         full = response[l+TITLE_LENGTH:e]
-        u = full.find(URL)
-        titles.append(full[u+URL_LENGTH:])
+        titles.append(full)
         return find_titles(titles, response[e+END_TITLE_LENGTH:])
 
 
