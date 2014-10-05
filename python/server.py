@@ -204,6 +204,18 @@ def entities():
 
         result = {}
         num_entities = len(entities)
+
+        max_entities = 0
+        i = -1
+        for x, entity_list in enumerate(entities):
+            if len(entity_list) > max_entities:
+                max_entities = len(entity_list)
+                i = x
+        if max_entities > 0:
+            temp = entities[0]
+            entities[0] = entities[i]
+            entities[i] = temp
+
         if num_entities > 0:
             previous_set = entities[0]
             final_set = entities[0]
