@@ -6,6 +6,7 @@ from thread_pool import ThreadPool
 import requests
 import utils
 import json
+from copy import deepcopy
 
 GOOGLE_NEWS_RSS = "https://news.google.com/news/feeds?output=rss&q="
 SPACE = "%20"
@@ -16,13 +17,17 @@ app = Flask(__name__)
 @app.before_first_request
 def initialize():
     app.pool = ThreadPool(5)
+    app.cache = {}
+    app.entity_cache = {}
 
 @app.route('/api/articles', methods=['POST'])
 def articles():
     error = None
     if request.method == 'POST':
-        query = request.form['query']
+        query = lower(request.form['query'])
         query = query.replace(" ", "%20")
+        if query in app.cache:
+            return Response(json.dumps(app.cache[query]), mimetype='application/json')
         url = GOOGLE_NEWS_RSS+query
         response = requests.get(url).text
 
@@ -72,14 +77,17 @@ def articles():
             sentiments,
             len(sentiments))
         result["sentiment"] = average_sentiment
+        app.cache[query] = deepcopy(result)
         return Response(json.dumps(result), mimetype='application/json')
 
 @app.route('/api/entities', methods=['POST'])
 def entities():
     error = None
     if request.method == 'POST':
-        query = request.form['query']
+        query = lower(request.form['query'])
         query = query.replace(" ", "%20")
+	if query in app.entity_cache:
+	    return Response(json.dumps(app.entity_cache[query]), mimetype='application/json')
         url = GOOGLE_NEWS_RSS+query
         response = requests.get(url).text
 
@@ -121,6 +129,7 @@ def entities():
     	    result[0] = [word.title() for word in entities[0]]
     	    for i in range(1, num_entities):
     	        result[i] = [word.title() for word in entities[i]]
+	    app.entity_cache[query] = deepcopy(result)
             return Response(json.dumps(result), mimetype='application/json')
     	result["entities"] = []
         return Response(json.dumps(result), mimetype='application/json')
