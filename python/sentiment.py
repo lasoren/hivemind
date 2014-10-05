@@ -29,29 +29,28 @@ if num_titles < num_links:
 if num_links < num_titles:
     titles = titles[:num_links]
 
-articles = []
+articles = {}
 pool = ThreadPool(num_links)
 for i in range(num_links):
     pool.add_task(
-        utils.get_article_sentiment, links[i], articles)
+        utils.get_article_sentiment, links[i], titles[i], articles)
 pool.wait_completion()
 
 sentiments = []
 
-print num_links
-print len(articles)
-
 result = {}
 result["articles"] = []
-for i in range(num_links):
+for key in articles:
     info = {}
-    info["title"] = titles[i]
-    info["link"] = links[i]
-    sentiments.append(articles[i]["sentiment"])
-    info["sentiment"] = sentiments[i]
-    info["snippet"] = articles[i]["snippet"]
+    info["title"] = articles[key]["title"]
+    info["link"] = key
+    sentiments.append(articles[key]["sentiment"])
+    info["sentiment"] = articles[key]["sentiment"]
+    info["snippet"] = articles[key]["snippet"]
     result["articles"].append(info)
 
-average_sentiment = utils.average_sentiment(sentiments, num_links)  
+average_sentiment = utils.average_sentiment(
+    sentiments,
+    len(sentiments))
 result["sentiment"] = average_sentiment
 print(result)

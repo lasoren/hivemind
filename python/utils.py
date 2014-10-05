@@ -52,7 +52,7 @@ def find_titles(titles, response):
         return find_titles(titles, response[e+END_TITLE_LENGTH:])
 
 
-def get_article_sentiment(url, articles):
+def get_article_sentiment(url, title, articles):
     article = Article(url)
     article_body = article.text
     lines = article_body.split("\n")
@@ -72,12 +72,14 @@ def get_article_sentiment(url, articles):
         result = {}
         result["snippet"] = ""
         result["sentiment"] = 0.5
+        result["title"] = title
         articles.append(result)
         return
     result = {}
     result["snippet"] = article.summary
     result["sentiment"] = article_sentiment
-    articles.append(result)
+    result["title"] = title
+    articles[url] = result
 
 
 def get_article_entities(url, entities):
