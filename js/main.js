@@ -1,3 +1,4 @@
+var url = "54.84.224.246";
 var fakeArticles = {
   sentiment: 0.73,
   articles: [
@@ -18,7 +19,7 @@ $(function(){
   $('.swarm').click(function() {
     var query = $('.query').val();
     // Make the actual API call
-    $.post('http://54.84.224.246/articles', {query: query}, function (data) {
+    $.post('http://' + url + '/api/articles', {query: query}, function (data) {
       $('.analysis').css({opacity: 0})
                     .removeClass("hidden")
                     .animate({opacity: 1}, 500, function() {
