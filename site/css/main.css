@@ -3,7 +3,7 @@
 }
 
 .analysis, .query-box, .articles {
-  border: 2px solid #111111;
+  background-color: #F2F2F2;
   padding: 10px;
   border-radius: 10px;
   margin-top: 20px;
