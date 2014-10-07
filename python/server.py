@@ -7,6 +7,7 @@ import requests
 import utils
 import json
 from copy import deepcopy
+from collections import defaultdict
 
 GOOGLE_NEWS_RSS = "https://news.google.com/news/feeds?output=rss&q="
 SPACE = "%20"
@@ -140,11 +141,13 @@ def sentiment():
 
         result = {}
         for key in articles:
+            print query, ':', articles[key]["sentiment"]
             sentiments.append(articles[key]["sentiment"])
 
         average_sentiment = utils.average_sentiment(
             sentiments,
             len(sentiments))
+        print average_sentiment
         result["sentiment"] = average_sentiment
         result["query"] = request.form['query']
         app.sentiment_cache[query] = deepcopy(result)
@@ -202,23 +205,40 @@ def entities():
 
         result = {}
         num_entities = len(entities)
-        if num_entities > 0:
-            previous_set = entities[0]
-            final_set = entities[0]
-            index = 1
-            while index < num_entities and len(final_set) > 5:
-                final_set = previous_set.intersection(entities[index])
-                if len(final_set) > 5:
-                    previous_set = final_set
-        entities_list = [word.title() for word in previous_set]
-        result["entities"] = entities_list
+
+
+        entity_dict = defaultdict(int)
+        for entity_list in entities:
+            for entity in entity_list:
+                entity_dict[entity] += 1
+        entities_list = reversed(list(sorted(entity_dict.items(), key=lambda x: x[1])))
+        entities_list = [x[0] for x in entities_list]
+        if len(entities_list) > 5:
+            entities_list = entities_list[:5]
+
+        fix_entities = False
+        if not entities_list:
+            fix_entities = True
 
         if num_entities > 0:
             entities_set = entities[0]
+            if fix_entities:
+                if len(entities[0]) > 3:
+                    entities_list = [word.title() for word in list(entities[0])[:3]]
+                else:
+                    entities_list = [word.title() for word in entities[0]]
             result[0] = [word.title() for word in entities[0]]
             for i in range(1, num_entities):
+                if fix_entities and len(entities_list) < 3:
+                    if len(entities[i]) + len(entities_list) > 3:
+                        entities_list.extend([word.title() for word in list(entities[i])[:3-len(entities_list)]])
+                    else:
+                        entities_list.extend([word.title() for word in entities[i]])
                 result[i] = [word.title() for word in entities[i]]
+
+        result["entities"] = entities_list
         app.entity_cache[query] = deepcopy(result)
+
 
         return Response(json.dumps(result), mimetype='application/json')
 
